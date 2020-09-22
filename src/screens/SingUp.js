@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -76,6 +76,7 @@ const SignUp = ({navigation}) => {
 
   return (
     <View style={globalStyles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="rgba(99, 121, 244, 0.2)" />
       <View style={Styles.header}>
         <Text style={Styles.textHeader}>Zwallet</Text>
       </View>

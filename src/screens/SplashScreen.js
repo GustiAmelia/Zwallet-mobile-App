@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 
 const SplashScreen = () => {
   return (
     <View style={Styles.container}>
+      <StatusBar barStyle="default" backgroundColor="#6379F4"/>
       <Text style={Styles.text}>Zwallet</Text>
     </View>
   );

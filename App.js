@@ -11,16 +11,18 @@ import { NavigationContainer } from '@react-navigation/native';
 
 // import Login from './src/screens/Login';
 // import SignUp from './src/screens/SingUp';
-import SplashScreen from './src/screens/SplashScreen';
+// import SplashScreen from './src/screens/SplashScreen';
+import Home from './src/screens/Home';
 
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <SplashScreen/>
-      {/* <Login/> */}
-      {/* <SignUp/> */}
-    </NavigationContainer>
+      <NavigationContainer>
+        {/* <SplashScreen/> */}
+        {/* <Login/> */}
+        {/* <SignUp/> */}
+        <Home/>
+      </NavigationContainer>
   );
 };
 
