@@ -7,16 +7,19 @@
  */
 
 import React from 'react';
-import { View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Login from './src/screens/Login';
+// import Login from './src/screens/Login';
+// import SignUp from './src/screens/SingUp';
+import SplashScreen from './src/screens/SplashScreen';
 
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Login/>
+      <SplashScreen/>
+      {/* <Login/> */}
+      {/* <SignUp/> */}
     </NavigationContainer>
   );
 };

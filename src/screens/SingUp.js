@@ -3,14 +3,32 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
-const Login = ({navigation}) => {
+const SignUp = ({navigation}) => {
 
   const [form, setForm] = useState({
+    username:null,
     email: null,
     password: null,
+    isValidUsername:false,
     isValidEmail:false,
     isValidPassword:false,
   });
+
+  const handleUsername = (val)=>{
+    if (val.trim().length > 0){
+      setForm({
+        ...form,
+        username:val,
+        isValidUsername:true,
+      });
+    } else {
+      setForm({
+        ...form,
+        username:val,
+        isValidUsername:false,
+      });
+    }
+  };
 
   const handleEmail = (val)=>{
     if (val.trim().length > 0){
@@ -27,6 +45,7 @@ const Login = ({navigation}) => {
       });
     }
   };
+
   const [data,setData] = useState({
     secureTextEntry: true,
   });
@@ -61,8 +80,35 @@ const Login = ({navigation}) => {
         <Text style={Styles.textHeader}>Zwallet</Text>
       </View>
       <View style={Styles.footer}>
-        <Text style={Styles.title}>Login</Text>
-        <Text style={Styles.text}>Login to your existing account to access all the features in Zwallet.</Text>
+        <Text style={Styles.title}>Sign Up</Text>
+        <Text style={Styles.text}>Create your account to access Zwallet.</Text>
+        {form.isValidUsername ?
+          <View style={Styles.formFilled}>
+            <Feather
+            style={Styles.icon}
+            name="user" size={20} color="#6379F4"/>
+            <TextInput
+              style={Styles.textInput}
+              placeholder="Enter your username"
+              placeholderTextColor="rgba(169, 169, 169, 0.8)"
+              autoCapitalize="none"
+              onChangeText={handleUsername}
+            />
+          </View>
+        :
+        <View style={Styles.formBlank}>
+          <Feather
+          style={Styles.icon}
+          name="user" size={20} color="rgba(169, 169, 169, 0.6)"/>
+          <TextInput
+            style={Styles.textInput}
+            placeholder="Enter your username"
+            placeholderTextColor="rgba(169, 169, 169, 0.8)"
+            autoCapitalize="none"
+            onChangeText={handleUsername}
+          />
+        </View>
+        }
         {form.isValidEmail ?
           <View style={Styles.formFilled}>
             <Feather
@@ -77,98 +123,95 @@ const Login = ({navigation}) => {
             />
           </View>
         :
-          <View style={Styles.formBlank}>
-            <Feather
-            style={Styles.icon}
-            name="mail" size={20} color="rgba(169, 169, 169, 0.6)"/>
-            <TextInput
-              style={Styles.textInput}
-              placeholder="Enter your e-mail"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              autoCapitalize="none"
-              onChangeText={handleEmail}
-            />
-          </View>
+        <View style={Styles.formBlank}>
+          <Feather
+          style={Styles.icon}
+          name="mail" size={20} color="rgba(169, 169, 169, 0.6)"/>
+          <TextInput
+            style={Styles.textInput}
+            placeholder="Enter your e-mail"
+            placeholderTextColor="rgba(169, 169, 169, 0.8)"
+            autoCapitalize="none"
+            onChangeText={handleEmail}
+          />
+        </View>
         }
         {form.isValidPassword ?
           <View style={Styles.formFilled}>
-            <Feather
-            style={Styles.icon}
-            name="lock" size={20} color="#6379F4"/>
-            <TextInput
-              style={Styles.textInput}
-              placeholder="Enter your password"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              autoCapitalize="none"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              onChangeText={handlePassword}
-            />
-            <View style={Styles.iconSecurity}>
-              <TouchableOpacity
-                onPress={updateSecureTextEntry}>
-                  {data.secureTextEntry ?
-                    <Feather
-                        name="eye-off"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                    :
-                    <Feather
-                        name="eye"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                  }
-              </TouchableOpacity>
-            </View>
+          <Feather
+          style={Styles.icon}
+          name="lock" size={20} color="#6379F4"/>
+          <TextInput
+            style={Styles.textInput}
+            placeholder="Create your password"
+            placeholderTextColor="rgba(169, 169, 169, 0.8)"
+            autoCapitalize="none"
+            secureTextEntry={data.secureTextEntry ? true : false}
+            onChangeText={handlePassword}
+          />
+          <View style={Styles.iconSecurity}>
+            <TouchableOpacity
+              onPress={updateSecureTextEntry}>
+                {data.secureTextEntry ?
+                  <Feather
+                      name="eye-off"
+                      color="rgba(169, 169, 169, 0.6)"
+                      size={20}
+                  />
+                  :
+                  <Feather
+                      name="eye"
+                      color="rgba(169, 169, 169, 0.6)"
+                      size={20}
+                  />
+                }
+            </TouchableOpacity>
           </View>
+        </View>
         :
-          <View style={Styles.formBlank}>
-            <Feather
-            style={Styles.icon}
-            name="lock" size={20} color="rgba(169, 169, 169, 0.6)"/>
-            <TextInput
-              style={Styles.textInput}
-              placeholder="Enter your password"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              autoCapitalize="none"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              onChangeText={handlePassword}
-            />
-            <View style={Styles.iconSecurity}>
-              <TouchableOpacity
-                onPress={updateSecureTextEntry}>
-                  {data.secureTextEntry ?
-                    <Feather
-                        name="eye-off"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                    :
-                    <Feather
-                        name="eye"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                  }
-              </TouchableOpacity>
-            </View>
+        <View style={Styles.formBlank}>
+          <Feather
+          style={Styles.icon}
+          name="lock" size={20} color="rgba(169, 169, 169, 0.6)"/>
+          <TextInput
+            style={Styles.textInput}
+            placeholder="Create your password"
+            placeholderTextColor="rgba(169, 169, 169, 0.8)"
+            autoCapitalize="none"
+            secureTextEntry={data.secureTextEntry ? true : false}
+            onChangeText={handlePassword}
+          />
+          <View style={Styles.iconSecurity}>
+            <TouchableOpacity
+              onPress={updateSecureTextEntry}>
+                {data.secureTextEntry ?
+                  <Feather
+                      name="eye-off"
+                      color="rgba(169, 169, 169, 0.6)"
+                      size={20}
+                  />
+                  :
+                  <Feather
+                      name="eye"
+                      color="rgba(169, 169, 169, 0.6)"
+                      size={20}
+                  />
+                }
+            </TouchableOpacity>
           </View>
+        </View>
         }
+        {form.isValidEmail && form.isValidPassword && form.isValidUsername ?
         <TouchableOpacity>
-          <Text style={Styles.textForgot}>Forgot password?</Text>
-        </TouchableOpacity>
-        {form.isValidEmail && form.isValidPassword ?
-        <TouchableOpacity>
-          <Text style={Styles.buttonLoginFilled}>Login</Text>
+          <Text style={Styles.buttonLoginFilled}>Sign Up</Text>
         </TouchableOpacity>
         :
-        <Text style={Styles.buttonLoginBlank}>Login</Text>
+        <Text style={Styles.buttonLoginBlank}>Sign Up</Text>
         }
         <View style={Styles.question}>
-          <Text style={Styles.textQuestion}>Don’t have an account? Let’s </Text>
+          <Text style={Styles.textQuestion}>Already have an account? Let’s </Text>
           <TouchableOpacity>
-            <Text style={Styles.textLink} onPress={()=>navigation.navigate('Sign Up')}>Sign up</Text>
+            <Text style={Styles.textLink} onPress={()=>navigation.navigate('Sign Up')}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -176,7 +219,7 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+export default SignUp;
 
 const Styles = StyleSheet.create({
   header:{
@@ -253,14 +296,6 @@ const Styles = StyleSheet.create({
   },
   iconSecurity:{
     justifyContent:'center',
-  },
-  textForgot:{
-    paddingVertical:5,
-    textAlign:'right',
-    marginLeft:'60%',
-    marginRight:26,
-    color:'rgba(58, 61, 66, 0.8)',
-    fontSize:14,
   },
   buttonLoginBlank:{
     marginTop:30,
