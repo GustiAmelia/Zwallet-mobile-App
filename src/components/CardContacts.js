@@ -1,26 +1,23 @@
 import React from 'react';
 import { View, Text,Image, StyleSheet} from 'react-native';
 
-const CardTransaction = ({item}) => {
+const CardContacs = ({item}) => {
   return (
     <View style={Styles.contenCard}>
-      <View style={Styles.leftContent}>
+      <View style={Styles.content}>
         <Image
         style={Styles.image}
         source={require('../../assets/avatar.png')}/>
-        <View style={Styles.textLeftContent}>
+        <View style={Styles.textContent}>
           <Text style={Styles.textName}>{item.name}</Text>
-          <Text style={Styles.description}>{item.description}</Text>
+          <Text style={Styles.phone}>{item.phone}</Text>
         </View>
-      </View>
-      <View style={Styles.rightContent}>
-        <Text style={Styles.nominal}>{item.total}</Text>
       </View>
     </View>
   );
 };
 
-export default CardTransaction;
+export default CardContacs;
 
 const Styles = StyleSheet.create({
   contenCard:{
@@ -33,11 +30,11 @@ const Styles = StyleSheet.create({
     elevation:5,
 
   },
-  leftContent:{
+  content:{
     flexDirection:'row',
     marginLeft:16,
   },
-  textLeftContent:{
+  textContent:{
     marginLeft:20,
     justifyContent:'center',
   },
@@ -51,19 +48,10 @@ const Styles = StyleSheet.create({
     fontWeight:'bold',
     color:'#4D4B57',
   },
-  description:{
+  phone:{
     fontSize:14,
     color:'#7A7886',
     marginTop:9,
-  },
-  rightContent:{
-    marginRight:16,
-    justifyContent:'center',
-  },
-  nominal:{
-    fontSize:18,
-    fontWeight:'bold',
-    color:'#1EC15F',
   },
 });
 

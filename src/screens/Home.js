@@ -11,7 +11,6 @@ const Home = () => {
     {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
     {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
     {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
-    {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
   ];
   return (
     <View style={globalStyles.container}>
@@ -72,8 +71,8 @@ const Styles = StyleSheet.create({
   header:{
     flex:1,
     backgroundColor:'#6379F4',
-    borderBottomLeftRadius:30,
-    borderBottomRightRadius:30,
+    borderBottomLeftRadius:25,
+    borderBottomRightRadius:25,
     justifyContent:'center',
   },
   contentHeader:{
@@ -131,6 +130,7 @@ const Styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     marginHorizontal:16,
+    marginBottom:20,
   },
   title:{
     color:'#514F5B',

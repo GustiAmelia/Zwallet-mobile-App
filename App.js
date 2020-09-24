@@ -12,7 +12,11 @@ import { NavigationContainer } from '@react-navigation/native';
 // import Login from './src/screens/Login';
 // import SignUp from './src/screens/SingUp';
 // import SplashScreen from './src/screens/SplashScreen';
-import Home from './src/screens/Home';
+// import Home from './src/screens/Home';
+// import CreatePin from './src/screens/CreatePin';
+// import History from './src/screens/History';
+// import Search from './src/screens/Search';
+import InputAmount from './src/screens/InputAmount';
 
 
 const App = () => {
@@ -21,7 +25,11 @@ const App = () => {
         {/* <SplashScreen/> */}
         {/* <Login/> */}
         {/* <SignUp/> */}
-        <Home/>
+        {/* <CreatePin/> */}
+        {/* <Home/> */}
+        {/* <History/> */}
+        {/* <Search/> */}
+        <InputAmount/>
       </NavigationContainer>
   );
 };
