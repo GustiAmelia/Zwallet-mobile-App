@@ -6,30 +6,38 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React,{useEffect} from 'react';
+import {useSelector} from 'react-redux';
+
 import { NavigationContainer } from '@react-navigation/native';
 
-// import Login from './src/screens/Login';
-// import SignUp from './src/screens/SingUp';
-// import SplashScreen from './src/screens/SplashScreen';
-// import Home from './src/screens/Home';
-// import CreatePin from './src/screens/CreatePin';
-// import History from './src/screens/History';
-// import Search from './src/screens/Search';
-import InputAmount from './src/screens/InputAmount';
-
+import SplashScreen from './src/screens/SplashScreen';
+import AuthStackScreen from './src/screens/AuthStackScreen';
+import MainStackScreen from './src/screens/MainStackSreen';
 
 const App = () => {
+
+  const login = useSelector((state)=>state.auth.isLoggedIn);
+
+  const [isLoading, setIsLoading ] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(()=>{
+      setIsLoading(false);
+    },1000);
+  }, []);
+
+  if (isLoading){
+    return (
+      <SplashScreen/>
+    );
+  }
   return (
       <NavigationContainer>
-        {/* <SplashScreen/> */}
-        {/* <Login/> */}
-        {/* <SignUp/> */}
-        {/* <CreatePin/> */}
-        {/* <Home/> */}
-        {/* <History/> */}
-        {/* <Search/> */}
-        <InputAmount/>
+        {login ?
+        <MainStackScreen/>
+        :
+        <AuthStackScreen/>}
       </NavigationContainer>
   );
 };

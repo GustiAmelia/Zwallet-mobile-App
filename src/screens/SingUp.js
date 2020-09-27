@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
+import { useDispatch,useSelector} from 'react-redux';
+
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
+import {signup} from '../redux/actions/auth';
+
 const SignUp = ({navigation}) => {
+  const dataregis = useSelector((state)=>state.register);
+  console.log(dataregis);
+  const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     username:null,
@@ -13,6 +20,8 @@ const SignUp = ({navigation}) => {
     isValidEmail:false,
     isValidPassword:false,
   });
+
+  console.log(form);
 
   const handleUsername = (val)=>{
     if (val.trim().length > 0){
@@ -73,6 +82,9 @@ const SignUp = ({navigation}) => {
     });
   };
 
+  const handleSingUp = ()=>{
+    dispatch(signup(form.username,form.email,form.password));
+  };
 
   return (
     <View style={globalStyles.container}>
@@ -203,7 +215,7 @@ const SignUp = ({navigation}) => {
         </View>
         }
         {form.isValidEmail && form.isValidPassword && form.isValidUsername ?
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSingUp}>
           <Text style={Styles.buttonLoginFilled}>Sign Up</Text>
         </TouchableOpacity>
         :
@@ -212,7 +224,7 @@ const SignUp = ({navigation}) => {
         <View style={Styles.question}>
           <Text style={Styles.textQuestion}>Already have an account? Let’s </Text>
           <TouchableOpacity>
-            <Text style={Styles.textLink} onPress={()=>navigation.navigate('Sign Up')}>Login</Text>
+            <Text style={Styles.textLink} onPress={()=>navigation.navigate('Login')}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>

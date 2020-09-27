@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import CardTransaction from '../components/CardTransaction';
 
-const Home = () => {
+const Home = ({navigation}) => {
 
   const data = [
     {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
@@ -17,7 +17,9 @@ const Home = () => {
       <StatusBar barStyle="default" backgroundColor="#6379F4"/>
       <View style={Styles.header}>
         <View style={Styles.contentHeader}>
-          <View style={Styles.leftContent}>
+          <TouchableOpacity
+            onPress={()=>navigation.navigate('Profile')}
+            style={Styles.leftContent}>
             <Image
             style={Styles.image}
             source={require('../../assets/avatar.png')}/>
@@ -25,7 +27,7 @@ const Home = () => {
               <Text style={Styles.textHeader}>Balance</Text>
               <Text style={Styles.nominalHeader}>Rp120.000</Text>
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={Styles.rightContent}>
             <TouchableOpacity>
               <Feather name="bell" size={21} color="#FAFAFA"/>

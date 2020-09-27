@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+
 import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
+import {getLogin} from '../redux/actions/auth';
+
 const Login = ({navigation}) => {
+
+  const login = useSelector((state)=>state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     email: null,
@@ -54,6 +61,13 @@ const Login = ({navigation}) => {
     });
   };
 
+  const handleSignIn = ()=>{
+    dispatch(getLogin(form.email,form.password));
+  };
+
+  if (login){
+    return navigation.navigate('Home');
+  }
 
   return (
     <View style={globalStyles.container}>
@@ -160,7 +174,7 @@ const Login = ({navigation}) => {
           <Text style={Styles.textForgot}>Forgot password?</Text>
         </TouchableOpacity>
         {form.isValidEmail && form.isValidPassword ?
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSignIn}>
           <Text style={Styles.buttonLoginFilled}>Login</Text>
         </TouchableOpacity>
         :
@@ -169,7 +183,7 @@ const Login = ({navigation}) => {
         <View style={Styles.question}>
           <Text style={Styles.textQuestion}>Don’t have an account? Let’s </Text>
           <TouchableOpacity>
-            <Text style={Styles.textLink} onPress={()=>navigation.navigate('Sign Up')}>Sign up</Text>
+            <Text style={Styles.textLink} onPress={()=>navigation.navigate('SignUp')}>Sign up</Text>
           </TouchableOpacity>
         </View>
       </View>
