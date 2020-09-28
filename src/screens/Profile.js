@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 
 import { View, Text,StatusBar, StyleSheet,ScrollView, TouchableOpacity, Image,Alert } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
@@ -9,6 +9,12 @@ import {logOut} from '../redux/actions/auth';
 
 
 const Profile = ({navigation}) => {
+
+  const user = useSelector((state)=>state.auth.data);
+
+  const regex = /localhost/;
+  const newUrlImage = user.avatar.replace(regex,'192.168.43.73');
+
 
   const dispatch = useDispatch();
 
@@ -43,16 +49,25 @@ const Profile = ({navigation}) => {
       </View>
       <View style={Styles.footer}>
         <ScrollView>
-          <Image
+          {user.avatar !== '' ?
+            <Image
             style={Styles.image}
-            source={require('../../assets/avatar.png')}/>
+            source={{uri:newUrlImage}}/>
+            :
+            <Feather
+            style={Styles.imageNoPict}
+            name="user" size={70} color="#6379F4"
+            />
+          }
           <TouchableOpacity style={Styles.edit}>
             <Feather name="edit-2" size={20} color="#7A7886"/>
             <Text style={Styles.textEdit}>Edit</Text>
           </TouchableOpacity>
-          <Text style={Styles.name}>Robert Chandler</Text>
-          <Text style={Styles.phone}>+62 813-9387-7946</Text>
-          <TouchableOpacity style={Styles.detailProfile}>
+          <Text style={Styles.name}>{user.firstname + '' + user.lastname}</Text>
+          <Text style={Styles.phone}>{user.phone}</Text>
+          <TouchableOpacity
+            onPress={()=>navigation.navigate('PersonalInfo')}
+            style={Styles.detailProfile}>
             <Text style={Styles.textDetail}>Personal Information</Text>
             <Feather name="arrow-right" size={25} color="#7E7D84"/>
           </TouchableOpacity>
@@ -97,6 +112,15 @@ const Styles = StyleSheet.create({
     height:90,
     borderRadius:10,
     alignSelf:'center',
+  },
+  imageNoPict:{
+    width:90,
+    height:90,
+    backgroundColor:'#EBEEF2',
+    borderRadius:10,
+    textAlignVertical:'center',
+    alignSelf:'center',
+    textAlign:'center',
   },
   edit:{
     marginVertical:15,

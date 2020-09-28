@@ -15,6 +15,7 @@ import SplashScreen from './src/screens/SplashScreen';
 import AuthStackScreen from './src/screens/AuthStackScreen';
 import MainStackScreen from './src/screens/MainStackSreen';
 
+
 const App = () => {
 
   const login = useSelector((state)=>state.auth.isLoggedIn);
@@ -25,13 +26,14 @@ const App = () => {
     setTimeout(()=>{
       setIsLoading(false);
     },1000);
-  }, []);
+  },);
 
   if (isLoading){
     return (
       <SplashScreen/>
     );
   }
+
   return (
       <NavigationContainer>
         {login ?

@@ -1,11 +1,26 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+require('number-to-locale-string-polyfill');
+
 import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity,FlatList } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
 import CardTransaction from '../components/CardTransaction';
+import {getReceiver} from '../redux/actions/receiver';
+
 
 const Home = ({navigation}) => {
+
+  const user = useSelector((state)=>state.auth.data);
+
+  const regex = /localhost/;
+  const newUrlImage = user.avatar.replace(regex,'192.168.43.73');
+
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(getReceiver());
+  });
 
   const data = [
     {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
@@ -20,12 +35,19 @@ const Home = ({navigation}) => {
           <TouchableOpacity
             onPress={()=>navigation.navigate('Profile')}
             style={Styles.leftContent}>
+            {user.avatar !== '' ?
             <Image
             style={Styles.image}
-            source={require('../../assets/avatar.png')}/>
+            source={{uri:newUrlImage}}/>
+            :
+            <Feather
+            style={Styles.imageNoPict}
+            name="user" size={40} color="#6379F4"
+            />
+            }
             <View style={Styles.textLeftContent}>
               <Text style={Styles.textHeader}>Balance</Text>
-              <Text style={Styles.nominalHeader}>Rp120.000</Text>
+              <Text style={Styles.nominalHeader}>{user.balance.toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
             </View>
           </TouchableOpacity>
           <View style={Styles.rightContent}>
@@ -37,7 +59,7 @@ const Home = ({navigation}) => {
       </View>
       <View style={Styles.footer}>
         <View style={Styles.button}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('Search')}>
             <Text style={Styles.textButton}><Feather
               name="arrow-up" size={25} color="#608DE2"
             />  Transfer</Text>
@@ -50,7 +72,7 @@ const Home = ({navigation}) => {
         </View>
         <View style={Styles.transaction}>
           <Text style={Styles.title}>Transaction History</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('History')}>
             <Text style={Styles.linkAll}>See all</Text>
           </TouchableOpacity>
         </View>
@@ -93,6 +115,14 @@ const Styles = StyleSheet.create({
     width:52,
     height:52,
     borderRadius:10,
+  },
+  imageNoPict:{
+    width:52,
+    height:52,
+    backgroundColor:'#EBEEF2',
+    borderRadius:10,
+    textAlignVertical:'center',
+    textAlign:'center',
   },
   textHeader:{
     fontSize:14,

@@ -2,18 +2,22 @@ import React from 'react';
 import { View, Text,Image, StyleSheet} from 'react-native';
 
 const CardContacs = ({item}) => {
+
+  const regex = /localhost/;
+  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+
   return (
-    <View style={Styles.contenCard}>
-      <View style={Styles.content}>
-        <Image
-        style={Styles.image}
-        source={require('../../assets/avatar.png')}/>
-        <View style={Styles.textContent}>
-          <Text style={Styles.textName}>{item.name}</Text>
-          <Text style={Styles.phone}>{item.phone}</Text>
+      <View style={Styles.contenCard}>
+        <View style={Styles.content}>
+          <Image
+          style={Styles.image}
+          source={{uri:newUrlImage}}/>
+          <View style={Styles.textContent}>
+            <Text style={Styles.textName}>{item.name}</Text>
+            <Text style={Styles.phone}>{item.phone}</Text>
+          </View>
         </View>
       </View>
-    </View>
   );
 };
 

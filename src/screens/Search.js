@@ -1,21 +1,22 @@
 import React from 'react';
-import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity,FlatList, TextInput } from 'react-native';
+import {useSelector} from 'react-redux';
+
+import { View, Text, StatusBar, StyleSheet, TouchableOpacity,FlatList, TextInput } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 import CardContacs from '../components/CardContacts';
 
-const Search = () => {
+const Search = ({navigation}) => {
 
-  const data = [
-    {name:'Samuel Suhi', phone:'087174014' },
-    {name:'Samuel Suhi', phone:'8249895' },
-    {name:'Samuel Suhi', phone:'T8327509235'},
-  ];
+  const receiver = useSelector((state)=>state.receiver.receiver);
+
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="default" backgroundColor="#6379F4"/>
       <View style={Styles.header}>
-        <TouchableOpacity style={Styles.back}>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('Home')}
+        style={Styles.back}>
           <Feather style={Styles.iconBack} name="arrow-left" size={30} color="#FFFFFF"/>
           <Text style={Styles.text}>Find Receiver</Text>
         </TouchableOpacity>
@@ -31,13 +32,15 @@ const Search = () => {
       <View style={Styles.footer}>
         <View style={Styles.titleWrapper}>
           <Text style={Styles.title}>Contacs</Text>
-            <Text style={Styles.description}>{data.length} contacs Found</Text>
+            <Text style={Styles.description}>{receiver.length} contacs Found</Text>
         </View>
         <FlatList
-          data={data}
+          data={receiver}
           renderItem={({item})=>{
             return (
-              <CardContacs item={item}/>
+              <TouchableOpacity onPress={()=>navigation.navigate('InputAmount',{item})}>
+                <CardContacs item={item}/>
+              </TouchableOpacity>
             );
           }}
         />

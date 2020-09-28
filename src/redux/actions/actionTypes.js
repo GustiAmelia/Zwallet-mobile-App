@@ -1,4 +1,6 @@
 export const fetchLogin = 'FETCH_LOGIN';
+export const fetchReceiver = 'FETCH_RECEIVER';
+export const fetchUser = 'FETCH_USER';
 
 export const isLoggedIn = 'LOGIN';
 export const isRegistered = 'SIGN_UP';

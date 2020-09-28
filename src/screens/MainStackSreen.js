@@ -10,6 +10,7 @@ import InputAmount from './InputAmount';
 import PinConfirmation from './PinConfirmation';
 import Search from './Search';
 import Success from './Success';
+import PersonalInfo from './PersonalInfo';
 
 const MainStack = createStackNavigator();
 
@@ -23,6 +24,7 @@ const MainStackScreen = ()=>(
     <MainStack.Screen name="PinConfirmation" component={PinConfirmation}/>
     <MainStack.Screen name="Search" component={Search}/>
     <MainStack.Screen name="Success" component={Success}/>
+    <MainStack.Screen name="PersonalInfo" component={PersonalInfo}/>
   </MainStack.Navigator>
 );
 

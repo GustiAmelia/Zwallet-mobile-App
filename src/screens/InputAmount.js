@@ -1,20 +1,26 @@
 import React from 'react';
-import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity,FlatList, TextInput } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
 
-const InputAmount = () => {
+const InputAmount = ({route,navigation}) => {
+
+  const {item} = route.params;
+  const regex = /localhost/;
+  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
 
   const form = {
     isValidPin:false,
   };
 
   return (
-    <View style={globalStyles.container}>
+    <ScrollView style={globalStyles.container}>
       <StatusBar barStyle="default" backgroundColor="#6379F4"/>
       <View style={Styles.header}>
-        <TouchableOpacity style={Styles.back}>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('Search')}
+        style={Styles.back}>
           <Feather style={Styles.iconBack} name="arrow-left" size={30} color="#FFFFFF"/>
           <Text style={Styles.text}>Transfer</Text>
         </TouchableOpacity>
@@ -22,10 +28,10 @@ const InputAmount = () => {
           <View style={Styles.content}>
             <Image
             style={Styles.image}
-            source={require('../../assets/avatar.png')}/>
+            source={{uri:newUrlImage}}/>
             <View style={Styles.textContent}>
-              <Text style={Styles.textName}>Samuel Suhi</Text>
-              <Text style={Styles.phone}>7928750293580</Text>
+              <Text style={Styles.textName}>{item.name}</Text>
+              <Text style={Styles.phone}>{item.phone}</Text>
             </View>
           </View>
         </View>
@@ -53,7 +59,7 @@ const InputAmount = () => {
         <Text style={Styles.buttonBlank}>Confirm</Text>
         }
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
