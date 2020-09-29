@@ -22,9 +22,9 @@ export const getAllReceiver = ()=>{
   return Axios.get('http://192.168.43.73:5000/receiver');
 };
 
-export const getUser = (email)=>{
-  return Axios.get('http://192.168.43.73:5000/user',{
-    email,
-  });
-};
+// export const getUser = (email)=>{
+//   return Axios.get('http://192.168.43.73:5000/user',{
+//     email,
+//   });
+// };
 

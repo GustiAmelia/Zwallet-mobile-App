@@ -17,9 +17,9 @@ const {persistore,store} = configureStore();
 const reactRedux = ()=>{
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistore}>
+      {/* <PersistGate loading={null} persistor={persistore}> */}
         <App/>
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   );
 };

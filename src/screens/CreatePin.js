@@ -36,6 +36,7 @@ const CreatePin = ({navigation}) => {
 
   const handleConfirm = ()=>{
     dispatch(pinInput(createPin,username));
+    navigation.navigate('PinSuccess');
   };
 
   return (
@@ -129,8 +130,7 @@ const CreatePin = ({navigation}) => {
             />
           </View>
           {createPin.length === 6 ?
-          <TouchableOpacity onPress={handleConfirm,()=>navigation.navigate('PinSuccess')
-          }>
+          <TouchableOpacity onPress={handleConfirm}>
             <Text style={Styles.buttonFilled}>Confirm</Text>
           </TouchableOpacity>
           :

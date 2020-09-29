@@ -7,6 +7,7 @@ const initialState = {
   isRejected: false,
   data :null,
   register:false,
+  pinSuccess:false,
 };
 
 const authReducers = (state = initialState,action) => {
@@ -38,6 +39,7 @@ const authReducers = (state = initialState,action) => {
         isRejected: false,
         isLoggedIn: login,
         register:false,
+        pinSuccess:false,
       };
     case actions.isRegistered + actions.pending:
       return {
@@ -66,6 +68,34 @@ const authReducers = (state = initialState,action) => {
         isRejected: false,
         isLoggedIn: false,
         register:signup,
+        pinSuccess:false,
+      };
+    case actions.createPin + actions.pending:
+      return {
+        ...state,
+        isPending:true,
+      };
+    case actions.createPin + actions.rejected:
+      return {
+        ...state,
+        isRejected:true,
+        isPending:false,
+      };
+    case actions.createPin + actions.fulfilled:
+      let pinSuccess = null;
+      if (action.payload.data.isSuccess){
+        pinSuccess = true;
+      } else {
+        pinSuccess = false;
+      }
+      return {
+        ...state,
+        isFulfilled: true,
+        isPending: false,
+        isRejected: false,
+        isLoggedIn: false,
+        register:true,
+        pinSuccess:pinSuccess,
       };
     case actions.isLoggedOut:
       return {

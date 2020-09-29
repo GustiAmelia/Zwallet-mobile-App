@@ -24,7 +24,7 @@ export const logOut = ()=>{
 
 export const pinInput = (pin,username)=>{
   return {
-    type:actions.isRegistered,
+    type:actions.createPin,
     payload:updatePin(pin,username),
   };
 };
