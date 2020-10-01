@@ -56,7 +56,7 @@ const InputAmount = ({route,navigation}) => {
     };
 
     dispatch(addAmountNoteCreator(data));
-    navigation.navigate('PinConfirmation');
+    navigation.navigate('PinConfirmation',{item});
   };
 
   const {item} = route.params;

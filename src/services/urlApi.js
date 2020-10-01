@@ -28,3 +28,13 @@ export const getValidPin = (email,pin)=>{
     pin,
   });
 };
+
+export const addDataTransfer = (category_id,amount,sender_id,receiver_id,note)=>{
+  return Axios.post('http://192.168.43.73:5000/transaction',{
+    category_id,
+    amount,
+    sender_id,
+    receiver_id,
+    note,
+  });
+};

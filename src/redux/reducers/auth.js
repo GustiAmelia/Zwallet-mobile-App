@@ -131,6 +131,11 @@ const authReducers = (state = initialState,action) => {
         isRejected: false,
         register:false,
       };
+    case actions.backHome:
+      return {
+        ...state,
+        isValidPin:false,
+      };
     default:
       return state;
    }

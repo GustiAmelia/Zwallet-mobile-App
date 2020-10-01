@@ -14,3 +14,5 @@ export const fulfilled = '_FULFILLED';
 export const rejected = '_REJECTED';
 
 export const addAmountNote = 'ADD_AMOUNT_NOTE';
+export const addTransfer = 'ADD_TRANSFER';
+export const backHome = 'BACK_HOME';

@@ -1,10 +1,22 @@
-import React, {useState} from 'react';
+import React  from 'react';
+import {useSelector} from 'react-redux';
 import { View, Text,StatusBar, StyleSheet, Image, ScrollView,TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../shared/globalStyles';
+import moment from 'moment';
 
-const Failed = ({navigation}) => {
+const Failed = ({route,navigation}) => {
 
+  const sender = useSelector((state)=>state.auth.data);
+  const amount = useSelector((state)=>state.transaction.amount);
+  const note = useSelector((state)=>state.transaction.note);
+  const date = moment(new Date()).format('MMMM D,YYYY');
+  const time = moment(new Date()).format('HH:mm');
+
+  const {item} = route.params;
+  const regex = /localhost/;
+  const newUrlImageSender = sender.avatar.replace(regex,'192.168.43.73');
+  const newUrlImageReceiver = item.avatar.replace(regex,'192.168.43.73');
 
   return (
     <View style={globalStyles.container}>
@@ -20,33 +32,40 @@ const Failed = ({navigation}) => {
           <View style={Styles.wrapperDetails}>
             <View style={Styles.amount}>
               <Text style={Styles.detailTitle}>Amount</Text>
-              <Text style={Styles.total}>Rp100.000</Text>
+              <Text style={Styles.total}>{amount}</Text>
             </View>
             <View style={Styles.balance}>
               <Text style={Styles.detailTitle}>Balance Left</Text>
-              <Text style={Styles.total}>Rp70.000</Text>
+              <Text style={Styles.total}>{sender.balance - amount}</Text>
             </View>
           </View>
           <View style={Styles.wrapperDetails}>
             <View style={Styles.date}>
               <Text style={Styles.detailTitle}>Date</Text>
-              <Text style={Styles.total}>May 11, 2020</Text>
+              <Text style={Styles.total}>{date}</Text>
             </View>
             <View style={Styles.time}>
               <Text style={Styles.detailTitle}>Time</Text>
-              <Text style={Styles.total}>12.20</Text>
+              <Text style={Styles.total}>{time}</Text>
             </View>
           </View>
           <View style={Styles.note}>
             <Text style={Styles.detailTitle}>Notes</Text>
-            <Text style={Styles.total}>For buying some socks</Text>
+            <Text style={Styles.total}>{note}</Text>
           </View>
           <Text style={Styles.text}>From</Text>
           <View style={Styles.contenCard}>
             <View style={Styles.content}>
+              {sender.avatar !== '' ?
               <Image
               style={Styles.image}
-              source={require('../../assets/avatar.png')}/>
+              source={{uri:newUrlImageSender}}/>
+              :
+              <Feather
+              style={Styles.imageNoPict}
+              name="user" size={40} color="#6379F4"
+              />
+              }
               <View style={Styles.textContent}>
                 <Text style={Styles.textName}>Samuel Suhi</Text>
                 <Text style={Styles.phone}>7928750293580</Text>
@@ -56,9 +75,16 @@ const Failed = ({navigation}) => {
           <Text style={Styles.text}>To</Text>
           <View style={Styles.contenCard}>
             <View style={Styles.content}>
+            {item.avatar !== '' ?
               <Image
               style={Styles.image}
-              source={require('../../assets/avatar.png')}/>
+              source={{uri:newUrlImageReceiver}}/>
+              :
+              <Feather
+              style={Styles.imageNoPict}
+              name="user" size={40} color="#6379F4"
+              />
+              }
               <View style={Styles.textContent}>
                 <Text style={Styles.textName}>Samuel Suhi</Text>
                 <Text style={Styles.phone}>7928750293580</Text>
@@ -194,9 +220,17 @@ const Styles = StyleSheet.create({
     justifyContent:'center',
   },
   image:{
-    width:56,
-    height:56,
+    width:52,
+    height:52,
     borderRadius:10,
+  },
+  imageNoPict:{
+    width:52,
+    height:52,
+    backgroundColor:'#EBEEF2',
+    borderRadius:10,
+    textAlignVertical:'center',
+    textAlign:'center',
   },
   textName:{
     fontSize:16,

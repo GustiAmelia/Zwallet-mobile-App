@@ -30,7 +30,7 @@ const Profile = ({navigation}) => {
 
   const choosePhotoFromLibrary = ()=>{
     console.log('choose photo');
-  }
+  };
 
   const renderInner = ()=>(
     <View style={Styles.panel}>

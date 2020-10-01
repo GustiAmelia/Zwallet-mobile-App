@@ -1,24 +1,35 @@
 import React, {useState,useEffect,useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 
-import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity,Alert } from 'react-native';
+import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
-import {checkPinIsValid} from '../redux/actions/auth';
 
-const PinConfirmation = ({navigation}) => {
+import {checkPinIsValid} from '../redux/actions/auth';
+import {transfer} from '../redux/actions/transaction';
+
+const PinConfirmation = ({route,navigation}) => {
+
+  const {item} = route.params;
 
   const email = useSelector((state)=>state.auth.data.email);
   const validPin = useSelector((state)=>state.auth.isValidPin);
+  const amount = useSelector((state)=>state.transaction.amount);
+  const note = useSelector((state)=>state.transaction.note);
+  const sender = useSelector((state)=>state.auth.data);
+  const category_id = 1;
 
   const dispatch = useDispatch();
 
   const handleButton = ()=>{
     dispatch(checkPinIsValid(email,createPin));
-    if (validPin){
-      navigation.navigate('Success');
-    }
+    dispatch(transfer(category_id,amount,sender.id,item.id,note));
   };
+
+  validPin ?
+      navigation.navigate('Success',{item})
+    :
+    null;
 
   const [pin,setPin] = useState({
     pin1:null,

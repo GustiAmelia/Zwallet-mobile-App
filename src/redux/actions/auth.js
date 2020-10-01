@@ -36,3 +36,9 @@ export const checkPinIsValid = (email,pin)=>{
   };
 };
 
+export const backToHome = ()=>{
+  return {
+    type:actions.backHome,
+  };
+};
+
