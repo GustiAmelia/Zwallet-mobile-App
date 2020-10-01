@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 require('number-to-locale-string-polyfill');
 
@@ -13,14 +13,17 @@ import {getReceiver} from '../redux/actions/receiver';
 const Home = ({navigation}) => {
 
   const user = useSelector((state)=>state.auth.data);
+  console.log(user.id);
 
   const regex = /localhost/;
   const newUrlImage = user.avatar.replace(regex,'192.168.43.73');
 
   const dispatch = useDispatch();
-  useEffect(()=>{
-    dispatch(getReceiver());
-  });
+
+  const handleButtonTransfer = ()=>{
+    dispatch(getReceiver(user.id));
+    navigation.navigate('Search');
+  };
 
   const data = [
     {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
@@ -59,7 +62,7 @@ const Home = ({navigation}) => {
       </View>
       <View style={Styles.footer}>
         <View style={Styles.button}>
-          <TouchableOpacity onPress={()=>navigation.navigate('Search')}>
+          <TouchableOpacity onPress={handleButtonTransfer}>
             <Text style={Styles.textButton}><Feather
               name="arrow-up" size={25} color="#608DE2"
             />  Transfer</Text>

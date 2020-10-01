@@ -18,13 +18,13 @@ export const updatePin = (pin,username)=>{
   });
 };
 
-export const getAllReceiver = ()=>{
-  return Axios.get('http://192.168.43.73:5000/receiver');
+export const getUser = (id)=>{
+  return Axios.get(`http://192.168.43.73:5000/user?id=${id}`);
 };
 
-// export const getUser = (email)=>{
-//   return Axios.get('http://192.168.43.73:5000/user',{
-//     email,
-//   });
-// };
-
+export const getValidPin = (email,pin)=>{
+  return Axios.post('http://192.168.43.73:5000/auth/pin',{
+    email,
+    pin,
+  });
+};

@@ -1,59 +1,48 @@
-import React, {useState} from 'react';
-import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, {useState,useEffect,useRef} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+
+import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity,Alert } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
+import {checkPinIsValid} from '../redux/actions/auth';
 
 const PinConfirmation = ({navigation}) => {
 
-  const [form, setForm] = useState({
-    email: null,
-    password: null,
-    isValidEmail:false,
-    isValidPassword:false,
-  });
+  const email = useSelector((state)=>state.auth.data.email);
+  const validPin = useSelector((state)=>state.auth.isValidPin);
 
-  const handleEmail = (val)=>{
-    if (val.trim().length > 0){
-      setForm({
-        ...form,
-        email:val,
-        isValidEmail:true,
-      });
-    } else {
-      setForm({
-        ...form,
-        email:val,
-        isValidEmail:false,
-      });
-    }
-  };
-  const [data,setData] = useState({
-    secureTextEntry: true,
-  });
+  const dispatch = useDispatch();
 
-  const handlePassword = (val)=>{
-    if (val.trim().length > 0){
-      setForm({
-        ...form,
-        password:val,
-        isValidPassword:true,
-      });
-    } else {
-      setForm({
-        ...form,
-        password:val,
-        isValidPassword:false,
-      });
+  const handleButton = ()=>{
+    dispatch(checkPinIsValid(email,createPin));
+    if (validPin){
+      navigation.navigate('Success');
     }
   };
 
-  const updateSecureTextEntry = () => {
-    setData({
-        ...data,
-        secureTextEntry: !data.secureTextEntry,
-    });
-  };
+  const [pin,setPin] = useState({
+    pin1:null,
+    pin2:null,
+    pin3:null,
+    pin4:null,
+    pin5:null,
+    pin6:null,
+  });
 
+  const pin1ref = useRef(null);
+  const pin2ref = useRef(null);
+  const pin3ref = useRef(null);
+  const pin4ref = useRef(null);
+  const pin5ref = useRef(null);
+  const pin6ref = useRef(null);
+
+  useEffect(()=>{
+    if (pin.pin1 === null){
+      return pin1ref.current.focus();
+    }
+  });
+
+  const createPin = pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
 
   return (
     <View style={globalStyles.container}>
@@ -68,51 +57,96 @@ const PinConfirmation = ({navigation}) => {
         <Text style={Styles.title}>Enter PIN to Transfer</Text>
         <Text style={Styles.text}>Enter your 6 digits PIN for confirmation to continue transferring money. </Text>
         <View style={Styles.formPin}>
-          <TextInput
-          style={Styles.inputPin}
-           maxLength={1}
-           placeholder="__"
-           keyboardType="numeric"
-           placeholderTextColor="rgba(169, 169, 169, 0.4)"
-          />
-          <TextInput
-          style={Styles.inputPin}
-          maxLength={1}
-          placeholder="__"
-           keyboardType="numeric"
-           placeholderTextColor="rgba(169, 169, 169, 0.4)"
-          />
-          <TextInput
-          style={Styles.inputPin}
-          maxLength={1}
-          placeholder="__"
-           keyboardType="numeric"
-           placeholderTextColor="rgba(169, 169, 169, 0.4)"
-          />
-          <TextInput
-          style={Styles.inputPin}
-          maxLength={1}
-          placeholder="__"
-           keyboardType="numeric"
-           placeholderTextColor="rgba(169, 169, 169, 0.4)"
-          />
-          <TextInput
-          style={Styles.inputPin}
-          maxLength={1}
-          placeholder="__"
-           keyboardType="numeric"
-           placeholderTextColor="rgba(169, 169, 169, 0.4)"
-          />
-          <TextInput
-          style={Styles.inputPin}
-          maxLength={1}
-          placeholder="__"
-           keyboardType="numeric"
-           placeholderTextColor="rgba(169, 169, 169, 0.4)"
-          />
+            <TextInput
+            style={Styles.inputPin}
+            ref={pin1ref}
+            maxLength={1}
+            placeholder="__"
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(val)=>{setPin({...pin,pin1:val});
+            if (val !== null){
+              pin2ref.current.focus();
+            }}}
+            placeholderTextColor="rgba(169, 169, 169, 0.4)"
+            value={pin.pin1}
+            />
+            <TextInput
+            style={Styles.inputPin}
+            ref={pin2ref}
+            maxLength={1}
+            placeholder="__"
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(val)=>{setPin({...pin,pin2:val});
+            if (val !== null){
+              pin3ref.current.focus();
+            }}}
+            value={pin.pin2}
+            placeholderTextColor="rgba(169, 169, 169, 0.4)"
+            />
+            <TextInput
+            style={Styles.inputPin}
+            ref={pin3ref}
+            maxLength={1}
+            placeholder="__"
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(val)=>{setPin({...pin,pin3:val});
+            if (val !== null){
+              pin4ref.current.focus();
+            }}}
+            value={pin.pin3}
+            placeholderTextColor="rgba(169, 169, 169, 0.4)"
+            />
+            <TextInput
+            style={Styles.inputPin}
+            ref={pin4ref}
+            maxLength={1}
+            placeholder="__"
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(val)=>{setPin({...pin,pin4:val});
+            if (val !== null){
+              pin5ref.current.focus();
+            }}}
+            value={pin.pin4}
+            placeholderTextColor="rgba(169, 169, 169, 0.4)"
+            />
+            <TextInput
+            style={Styles.inputPin}
+            ref={pin5ref}
+            maxLength={1}
+            placeholder="__"
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(val)=>{setPin({...pin,pin5:val});
+            if (val !== null){
+              pin6ref.current.focus();
+            }}}
+            value={pin.pin5}
+            placeholderTextColor="rgba(169, 169, 169, 0.4)"
+            />
+            <TextInput
+            style={Styles.inputPin}
+            ref={pin6ref}
+            maxLength={1}
+            placeholder="__"
+            keyboardType="numeric"
+            secureTextEntry={true}
+            onChangeText={(val)=>{setPin({...pin,pin6:val});
+            if (val !== null){
+              pin1ref.current.focus();
+            }}}
+            value={pin.pin6}
+            placeholderTextColor="rgba(169, 169, 169, 0.4)"
+            />
         </View>
-        {form.isValidEmail && form.isValidPassword ?
-        <TouchableOpacity>
+        {/* {validPin ? null :
+        <Text style={Styles.wrongPin}>You entered an incorect PIN. Try again</Text>
+        } */}
+        {createPin.length === 6 ?
+        <TouchableOpacity onPress={handleButton}>
           <Text style={Styles.buttonFilled}>Transfer Now</Text>
         </TouchableOpacity>
         :
@@ -203,6 +237,10 @@ const Styles = StyleSheet.create({
     borderBottomColor:'#6379F4',
     marginHorizontal:16,
     marginVertical:8,
+  },
+  wrongPin:{
+    color:'red',
+    textAlign:'center',
   },
   buttonBlank:{
     marginTop:100,

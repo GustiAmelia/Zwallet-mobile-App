@@ -1,4 +1,4 @@
-import {login,register,updatePin} from '../../services/urlApi';
+import {login,register,updatePin,getValidPin} from '../../services/urlApi';
 
 import * as actions from './actionTypes';
 
@@ -26,6 +26,13 @@ export const pinInput = (pin,username)=>{
   return {
     type:actions.createPin,
     payload:updatePin(pin,username),
+  };
+};
+
+export const checkPinIsValid = (email,pin)=>{
+  return {
+    type:actions.checkPin,
+    payload:getValidPin(email,pin),
   };
 };
 

@@ -1,18 +1,67 @@
-import React from 'react';
+import React,{useState} from 'react';
+import { useDispatch} from 'react-redux';
+
 import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
+import {addAmountNoteCreator} from '../redux/actions/transaction';
 
 
 const InputAmount = ({route,navigation}) => {
 
+  const dispatch = useDispatch();
+  const [form,setForm] = useState({
+    amount:null,
+    note:null,
+    isValidNote:false,
+    isValidAmount:false,
+  });
+
+  const handleInputAmount = (val)=>{
+    if (val.trim().length > 0){
+      setForm({
+        ...form,
+        amount:val,
+        isValidAmount:true,
+      });
+    } else {
+      setForm({
+        ...form,
+        amount:val,
+        isValidAmount:false,
+      });
+    }
+  };
+
+  const handleInputNote = (val)=>{
+    if (val.trim().length > 0){
+      setForm({
+        ...form,
+        note:val,
+        isValidNote:true,
+      });
+    } else {
+      setForm({
+        ...form,
+        note:val,
+        isValidNote:false,
+      });
+    }
+  };
+
+  const handleContinue = () => {
+    const data = {
+      amount: form.amount,
+      note: form.note,
+    };
+
+    dispatch(addAmountNoteCreator(data));
+    navigation.navigate('PinConfirmation');
+  };
+
   const {item} = route.params;
   const regex = /localhost/;
   const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
-
-  const form = {
-    isValidPin:false,
-  };
 
   return (
     <ScrollView style={globalStyles.container}>
@@ -26,11 +75,18 @@ const InputAmount = ({route,navigation}) => {
         </TouchableOpacity>
         <View style={Styles.contenCard}>
           <View style={Styles.content}>
-            <Image
-            style={Styles.image}
-            source={{uri:newUrlImage}}/>
+            {item.avatar !== '' ?
+              <Image
+              style={Styles.image}
+              source={{uri:newUrlImage}}/>
+              :
+              <Feather
+              style={Styles.imageNoPict}
+              name="user" size={40} color="#6379F4"
+              />
+              }
             <View style={Styles.textContent}>
-              <Text style={Styles.textName}>{item.name}</Text>
+              <Text style={Styles.textName}>{item.firstname} {item.lastname}</Text>
               <Text style={Styles.phone}>{item.phone}</Text>
             </View>
           </View>
@@ -42,21 +98,36 @@ const InputAmount = ({route,navigation}) => {
         placeholder="0.00"
         placeholderTextColor="#B5BDCC"
         keyboardType="numeric"
+        onChangeText={handleInputAmount}
         />
-        <Text style={Styles.description}>Rp120.000 Available</Text>
-        <View style={Styles.formNote}>
+        <Text style={Styles.description}>{item.balance} Available</Text>
+        {form.isValidNote ?
+        <View style={Styles.formNoteFilled}>
+          <Feather style={Styles.iconNote} name="edit-2" size={25} color="#6379F4"/>
+          <TextInput
+          style={Styles.textNote}
+          placeholder="Add some notes"
+          placeholderTextColor="rgba(169, 169, 169, 0.8)"
+          onChangeText={handleInputNote}
+          />
+        </View>
+        :
+        <View style={Styles.formNoteBlank}>
           <Feather style={Styles.iconNote} name="edit-2" size={25} color="rgba(169, 169, 169, 0.6)"/>
           <TextInput
           style={Styles.textNote}
           placeholder="Add some notes"
-          placeholderTextColor="rgba(169, 169, 169, 0.8)"/>
+          placeholderTextColor="rgba(169, 169, 169, 0.8)"
+          onChangeText={handleInputNote}
+          />
         </View>
-        {form.isValidPin ?
-        <TouchableOpacity>
-          <Text style={Styles.buttonFilled}>Confirm</Text>
+        }
+        {form.isValidAmount ?
+        <TouchableOpacity onPress={handleContinue}>
+          <Text style={Styles.buttonFilled}>Continue</Text>
         </TouchableOpacity>
         :
-        <Text style={Styles.buttonBlank}>Confirm</Text>
+        <Text style={Styles.buttonBlank}>Continue</Text>
         }
       </View>
     </ScrollView>
@@ -106,9 +177,17 @@ const Styles = StyleSheet.create({
     justifyContent:'center',
   },
   image:{
-    width:56,
-    height:56,
+    width:52,
+    height:52,
     borderRadius:10,
+  },
+  imageNoPict:{
+    width:52,
+    height:52,
+    backgroundColor:'#EBEEF2',
+    borderRadius:10,
+    textAlignVertical:'center',
+    textAlign:'center',
   },
   textName:{
     fontSize:16,
@@ -127,6 +206,7 @@ const Styles = StyleSheet.create({
     fontSize:42,
     alignSelf:'center',
     marginVertical:20,
+    color:'#6379F4',
   },
   description:{
     color:'#7C7895',
@@ -134,10 +214,17 @@ const Styles = StyleSheet.create({
     fontWeight:'bold',
     alignSelf:'center',
   },
-  formNote:{
+  formNoteBlank:{
     flexDirection:'row',
     borderBottomWidth:1.5,
     borderBottomColor:'rgba(169, 169, 169, 0.6)',
+    marginHorizontal:16,
+    marginTop:60,
+  },
+  formNoteFilled:{
+    flexDirection:'row',
+    borderBottomWidth:1.5,
+    borderBottomColor:'#6379F4',
     marginHorizontal:16,
     marginTop:60,
   },
@@ -191,4 +278,3 @@ const Styles = StyleSheet.create({
     elevation:3,
   },
 });
-

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text,Image, StyleSheet} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 
 const CardContacs = ({item}) => {
 
@@ -9,11 +10,18 @@ const CardContacs = ({item}) => {
   return (
       <View style={Styles.contenCard}>
         <View style={Styles.content}>
-          <Image
-          style={Styles.image}
-          source={{uri:newUrlImage}}/>
+          {item.avatar !== '' ?
+            <Image
+            style={Styles.image}
+            source={{uri:newUrlImage}}/>
+            :
+            <Feather
+            style={Styles.imageNoPict}
+            name="user" size={40} color="#6379F4"
+            />
+            }
           <View style={Styles.textContent}>
-            <Text style={Styles.textName}>{item.name}</Text>
+            <Text style={Styles.textName}>{item.firstname} {item.lastname}</Text>
             <Text style={Styles.phone}>{item.phone}</Text>
           </View>
         </View>
@@ -43,9 +51,17 @@ const Styles = StyleSheet.create({
     justifyContent:'center',
   },
   image:{
-    width:56,
-    height:56,
+    width:52,
+    height:52,
     borderRadius:10,
+  },
+  imageNoPict:{
+    width:52,
+    height:52,
+    backgroundColor:'#EBEEF2',
+    borderRadius:10,
+    textAlignVertical:'center',
+    textAlign:'center',
   },
   textName:{
     fontSize:16,

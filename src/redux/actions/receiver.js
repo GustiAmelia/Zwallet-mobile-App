@@ -1,10 +1,10 @@
-import {getAllReceiver} from '../../services/urlApi';
+import {getUser} from '../../services/urlApi';
 
 import * as actions from './actionTypes';
 
-export const getReceiver = ()=>{
+export const getReceiver = (id)=>{
   return {
     type:actions.fetchReceiver,
-    payload:getAllReceiver(),
+    payload:getUser(id),
   };
 };
