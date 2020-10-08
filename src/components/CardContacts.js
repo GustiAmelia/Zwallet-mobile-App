@@ -21,7 +21,7 @@ const CardContacs = ({item}) => {
             />
             }
           <View style={Styles.textContent}>
-            <Text style={Styles.textName}>{item.firstname} {item.lastname}</Text>
+            <Text style={Styles.textName}>{item.username}</Text>
             <Text style={Styles.phone}>{item.phone}</Text>
           </View>
         </View>

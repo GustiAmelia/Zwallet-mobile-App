@@ -42,3 +42,11 @@ export const backToHome = ()=>{
   };
 };
 
+export const pinInputChange = (pin,username)=>{
+  return {
+    type:actions.changePin,
+    payload:updatePin(pin,username),
+  };
+};
+
+

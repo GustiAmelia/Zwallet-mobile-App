@@ -6,33 +6,14 @@ import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {checkPinIsValid} from '../redux/actions/auth';
-import {transfer} from '../redux/actions/transaction';
 
-const PinConfirmation = ({route,navigation}) => {
 
-  const {item} = route.params;
-  const {date} = route.params;
-  const {time} = route.params;
-  // console.log(route)
+const ChangePin = ({navigation}) => {
 
   const email = useSelector((state)=>state.auth.data.email);
   const validPin = useSelector((state)=>state.auth.isValidPin);
-  const amount = useSelector((state)=>state.transaction.amount);
-  const note = useSelector((state)=>state.transaction.note);
-  const sender = useSelector((state)=>state.auth.data);
-  const category = 'Transfer';
 
   const dispatch = useDispatch();
-
-  const handleButton = ()=>{
-    dispatch(checkPinIsValid(email,createPin));
-    dispatch(transfer(category,amount,sender.id,item.id,note));
-  };
-
-  validPin ?
-      navigation.navigate('Success',{item,date:date,time:time})
-    :
-    null;
 
   const [pin,setPin] = useState({
     pin1:null,
@@ -58,18 +39,26 @@ const PinConfirmation = ({route,navigation}) => {
 
   const createPin = pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
 
+  const handleButton = ()=>{
+    dispatch(checkPinIsValid(email,createPin));
+  };
+
+  validPin ?
+      navigation.navigate('NewPin')
+    :
+    null;
+
   return (
     <View style={globalStyles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#6379F4" />
+      <StatusBar barStyle="dark-content" backgroundColor="rgba(99, 121, 244, 0.2);" />
       <View style={Styles.header}>
-        <TouchableOpacity style={Styles.contentHeader}>
-          <Feather style={Styles.iconBack} name="arrow-left" size={30} color="#FFFFFF"/>
-          <Text style={Styles.textHeader}>Enter Your PIN</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate('Profile')} style={Styles.contentHeader}>
+          <Feather style={Styles.iconBack} name="arrow-left" size={30} color="#4D4B57"/>
+          <Text style={Styles.textHeader}>Change PIN</Text>
         </TouchableOpacity>
       </View>
       <View style={Styles.footer}>
-        <Text style={Styles.title}>Enter PIN to Transfer</Text>
-        <Text style={Styles.text}>Enter your 6 digits PIN for confirmation to continue transferring money. </Text>
+        <Text style={Styles.text}>Enter your current 6 digits Zwallet PIN below to continue to the next steps.</Text>
         <View style={Styles.formPin}>
             <TextInput
             style={Styles.inputPin}
@@ -156,30 +145,24 @@ const PinConfirmation = ({route,navigation}) => {
             placeholderTextColor="rgba(169, 169, 169, 0.4)"
             />
         </View>
-        {/* {validPin ? null :
-        <Text style={Styles.wrongPin}>You entered an incorect PIN. Try again</Text>
-        } */}
         {createPin.length === 6 ?
         <TouchableOpacity onPress={handleButton}>
-          <Text style={Styles.buttonFilled}>Transfer Now</Text>
+          <Text style={Styles.buttonFilled}>Continue</Text>
         </TouchableOpacity>
         :
-        <Text style={Styles.buttonBlank}>Transfer Now</Text>
+        <Text style={Styles.buttonBlank}>Continue</Text>
         }
       </View>
     </View>
   );
 };
 
-export default PinConfirmation;
+export default ChangePin;
 
 const Styles = StyleSheet.create({
   header:{
     flex:1,
     justifyContent:'center',
-    backgroundColor:'#6379F4',
-    borderBottomLeftRadius:25,
-    borderBottomRightRadius:25,
   },
   contentHeader:{
     marginHorizontal:16,
@@ -187,7 +170,7 @@ const Styles = StyleSheet.create({
   },
   textHeader:{
     textAlign:'center',
-    color:'#FFFFFF',
+    color:'#4D4B57',
     fontSize:20,
     fontWeight:'bold',
     textAlignVertical:'center',
@@ -199,22 +182,12 @@ const Styles = StyleSheet.create({
   footer:{
     flex:4,
   },
-  title:{
-    marginTop:25,
-    textAlign:'center',
-    fontWeight:'bold',
-    fontStyle:'normal',
-    fontFamily:'Nunito Sans',
-    fontSize:24,
-    color: '#3A3D42',
-    lineHeight:33,
-  },
   text:{
-    marginVertical:12.5,
+    marginVertical:5,
     fontWeight:'normal',
     fontStyle:'normal',
     fontFamily:'Nunito Sans',
-    textAlign:'center',
+    textAlign:'left',
     marginHorizontal:15,
     fontSize:16,
     lineHeight:23,
@@ -257,7 +230,7 @@ const Styles = StyleSheet.create({
     textAlign:'center',
   },
   buttonBlank:{
-    marginTop:100,
+    marginTop:150,
     textAlign:'center',
     fontSize:18,
     color:'#88888f',
@@ -278,7 +251,7 @@ const Styles = StyleSheet.create({
     elevation:3,
   },
   buttonFilled:{
-    marginTop:100,
+    marginTop:150,
     textAlign:'center',
     fontSize:18,
     color:'#FFFFFF',

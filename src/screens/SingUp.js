@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useDispatch,useSelector} from 'react-redux';
+import { useDispatch} from 'react-redux';
 
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import globalStyles from '../shared/globalStyles';
@@ -8,8 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import {signup} from '../redux/actions/auth';
 
 const SignUp = ({navigation}) => {
-  const dataregis = useSelector((state)=>state.register);
-  console.log(dataregis);
+
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
@@ -20,8 +19,6 @@ const SignUp = ({navigation}) => {
     isValidEmail:false,
     isValidPassword:false,
   });
-
-  console.log(form);
 
   const handleUsername = (val)=>{
     if (val.trim().length > 0){
@@ -216,10 +213,10 @@ const SignUp = ({navigation}) => {
         }
         {form.isValidEmail && form.isValidPassword && form.isValidUsername ?
         <TouchableOpacity onPress={handleSingUp}>
-          <Text style={Styles.buttonLoginFilled}>Sign Up</Text>
+          <Text style={Styles.buttonSignUpFilled}>Sign Up</Text>
         </TouchableOpacity>
         :
-        <Text style={Styles.buttonLoginBlank}>Sign Up</Text>
+        <Text style={Styles.buttonSignUpBlank}>Sign Up</Text>
         }
         <View style={Styles.question}>
           <Text style={Styles.textQuestion}>Already have an account? Let’s </Text>
@@ -310,7 +307,7 @@ const Styles = StyleSheet.create({
   iconSecurity:{
     justifyContent:'center',
   },
-  buttonLoginBlank:{
+  buttonSignUpBlank:{
     marginTop:30,
     textAlign:'center',
     fontSize:18,
@@ -331,7 +328,7 @@ const Styles = StyleSheet.create({
 
     elevation:3,
   },
-  buttonLoginFilled:{
+  buttonSignUpFilled:{
     marginTop:30,
     textAlign:'center',
     fontSize:18,

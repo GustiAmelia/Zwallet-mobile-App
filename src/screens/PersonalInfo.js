@@ -26,11 +26,11 @@ const PersonalInfo = ({navigation}) => {
           <Text style={Styles.textFooter}>We got your personal information from the sign up proccess. If you want to make changes on your information, contact our support.</Text>
           <View style={Styles.detailProfile}>
             <Text style={Styles.detailTitle}>First Name</Text>
-            <Text style={Styles.info}>{user.firstname}</Text>
+            <Text style={Styles.info}>{user.username.split(' ')[0]}</Text>
           </View>
           <TouchableOpacity style={Styles.detailProfile}>
             <Text style={Styles.detailTitle}>Last Name</Text>
-            <Text style={Styles.info}>{user.lastname}</Text>
+            <Text style={Styles.info}>{user.username.split(' ')[1]}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={Styles.detailProfile}>
             <Text style={Styles.detailTitle}>Verified E-mail</Text>

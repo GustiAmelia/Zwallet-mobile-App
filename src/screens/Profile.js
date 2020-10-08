@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {useDispatch,useSelector} from 'react-redux';
 
 import { View, Text,StatusBar, StyleSheet,ScrollView, TouchableOpacity, Image,Alert } from 'react-native';
@@ -6,59 +6,112 @@ import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../shared/globalStyles';
 
 import {logOut} from '../redux/actions/auth';
+import {updateImgCreator} from '../redux/actions/user';
 
-import Animated from 'react-native-reanimated';
+// import Animated from 'react-native-reanimated';
+import ImagePicker from 'react-native-image-picker';
 import BottomSheet from 'reanimated-bottom-sheet';
 
 
 const Profile = ({navigation}) => {
 
-  const sheetRef = React.createRef();
-  const fall = new Animated.Value(1);
-
-  const renderHeader = ()=>(
-    <View style={Styles.headerButton}>
-      <View style={Styles.panelHeader}>
-        <View style={Styles.panelHandle}/>
-      </View>
-    </View>
-  );
-
-  const takePhotoFromCamera = ()=>{
-    console.log('take photo');
-  };
-
-  const choosePhotoFromLibrary = ()=>{
-    console.log('choose photo');
-  };
-
-  const renderInner = ()=>(
-    <View style={Styles.panel}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={Styles.panelTitle}>Upload Photo</Text>
-        <Text style={Styles.panelSubtitle}>Choose Your Profile Picture</Text>
-      </View>
-      <TouchableOpacity style={Styles.panelButton} onPress={takePhotoFromCamera}>
-        <Text style={Styles.panelButtonTitle}>Take Photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={Styles.panelButton} onPress={choosePhotoFromLibrary}>
-        <Text style={Styles.panelButtonTitle}>Choose From Library</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={Styles.panelButton}
-        onPress={() => sheetRef.current.snapTo(1)}>
-        <Text style={Styles.panelButtonTitle}>Cancel</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   const user = useSelector((state)=>state.auth.data);
+  const dispatch = useDispatch();
 
   const regex = /localhost/;
   const newUrlImage = user.avatar.replace(regex,'192.168.43.73');
 
+  const [image,setImage] = useState(null);
+  // const [avatar, setAvatar] = useState(null);
+  // const [isEnabled, setIsEnabled] = useState(false);
+  // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const dispatch = useDispatch();
+  const alert = () => {
+    Alert.alert(
+      'File Too Larger',
+      '',
+      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      {cancelable: false},
+    );
+  };
+
+
+  const handleChoose = () => {
+    const options = {
+      title: 'select-picture',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      noData: true,
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        return null;
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        console.log(response);
+        const source = response;
+        if (response.fileSize > 200000) {
+          setImage(null);
+          alert();
+        } else {
+          setImage(source);
+          setTimeout(() => {
+            dispatch(
+              updateImgCreator(user.id,source),
+            );
+          }, 500);
+        }
+      }
+    });
+  };
+
+
+
+  // const sheetRef = React.createRef();
+  // const fall = new Animated.Value(1);
+
+  // const renderHeader = ()=>(
+  //   <View style={Styles.headerButton}>
+  //     <View style={Styles.panelHeader}>
+  //       <View style={Styles.panelHandle}/>
+  //     </View>
+  //   </View>
+  // );
+
+  // const takePhotoFromCamera = ()=>{
+  //   console.log('take photo');
+  // };
+
+  // const choosePhotoFromLibrary = ()=>{
+  //   console.log('choose photo');
+  // };
+
+  // const renderInner = ()=>(
+  //   <View style={Styles.panel}>
+  //     <View style={{alignItems: 'center'}}>
+  //       <Text style={Styles.panelTitle}>Upload Photo</Text>
+  //       <Text style={Styles.panelSubtitle}>Choose Your Profile Picture</Text>
+  //     </View>
+  //     <TouchableOpacity style={Styles.panelButton} onPress={takePhotoFromCamera}>
+  //       <Text style={Styles.panelButtonTitle}>Take Photo</Text>
+  //     </TouchableOpacity>
+  //     <TouchableOpacity style={Styles.panelButton} onPress={choosePhotoFromLibrary}>
+  //       <Text style={Styles.panelButtonTitle}>Choose From Library</Text>
+  //     </TouchableOpacity>
+  //     <TouchableOpacity
+  //       style={Styles.panelButton}
+  //       onPress={() => sheetRef.current.snapTo(1)}>
+  //       <Text style={Styles.panelButtonTitle}>Cancel</Text>
+  //     </TouchableOpacity>
+  //   </View>
+  // );
+
 
   const makeSureSingOut = () =>
     Alert.alert(
@@ -82,7 +135,7 @@ const Profile = ({navigation}) => {
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(99, 121, 244, 0.2)" />
-      <BottomSheet
+      {/* <BottomSheet
       ref = {sheetRef}
       snapPoints = {[330,0]}
       renderContent ={renderInner}
@@ -90,33 +143,47 @@ const Profile = ({navigation}) => {
       initialSnap={1}
       callbackNode ={fall}
       enabledGestureInteraction ={true}
-      />
-      <Animated.View style={Styles.header}>
+      /> */}
+      <View style={Styles.header}>
         <TouchableOpacity
           onPress={()=>navigation.navigate('Home')}
           style={Styles.back}>
           <Feather name="arrow-left" size={30}/>
         </TouchableOpacity>
-      </Animated.View>
+      </View>
       <View style={Styles.footer}>
         <ScrollView>
-          {user.avatar !== '' ?
+          {image !== null ? (
+            <Image source={image} style={Styles.image} />
+          ) : user.avatar !== '' ? (
+            <Image
+              source={{uri:newUrlImage}}
+              style={Styles.image}
+            />
+          ) : (
+            <Feather
+            style={Styles.imageNoPict}
+            name="user" size={70} color="#6379F4"
+            />
+          )}
+          {/* {user.avatar !== '' ?
             <Image
             style={Styles.image}
-            source={{uri:newUrlImage}}/>
+            source={{uri:image}}/>
             :
             <Feather
             style={Styles.imageNoPict}
             name="user" size={70} color="#6379F4"
             />
-          }
+          } */}
           <TouchableOpacity
-          onPress={()=>sheetRef.current.snapTo(0)}
+          // onPress={()=>sheetRef.current.snapTo(0)}
+          onPress={handleChoose}
           style={Styles.edit}>
             <Feather name="edit-2" size={20} color="#7A7886"/>
             <Text style={Styles.textEdit}>Edit</Text>
           </TouchableOpacity>
-          <Text style={Styles.name}>{user.firstname} {user.lastname}</Text>
+          <Text style={Styles.name}>{user.username}</Text>
           <Text style={Styles.phone}>{user.phone}</Text>
           <TouchableOpacity
             onPress={()=>navigation.navigate('PersonalInfo')}
@@ -124,11 +191,11 @@ const Profile = ({navigation}) => {
             <Text style={Styles.textDetail}>Personal Information</Text>
             <Feather name="arrow-right" size={25} color="#7E7D84"/>
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.detailProfile}>
+          <TouchableOpacity onPress={()=>navigation.navigate('ChangePassword')} style={Styles.detailProfile}>
             <Text style={Styles.textDetail}>Change Password</Text>
             <Feather name="arrow-right" size={25} color="#7E7D84"/>
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.detailProfile}>
+          <TouchableOpacity onPress={()=>navigation.navigate('ChangePin')} style={Styles.detailProfile}>
             <Text style={Styles.textDetail}>Change PIN</Text>
             <Feather name="arrow-right" size={25} color="#7E7D84"/>
           </TouchableOpacity>

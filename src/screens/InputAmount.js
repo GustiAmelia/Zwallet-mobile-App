@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { useDispatch} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 
 import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import globalStyles from '../shared/globalStyles';
@@ -8,6 +8,15 @@ import {addAmountNoteCreator} from '../redux/actions/transaction';
 
 
 const InputAmount = ({route,navigation}) => {
+
+    //data from redux auth
+    const loginUser = useSelector((state)=>state.auth.data);
+
+    //data from redux user
+    const user = useSelector((state)=>state.user.user);
+
+    //filter data profile from user
+    const userProfile = user.filter(value=>{return value.id === loginUser.id;});
 
   const dispatch = useDispatch();
   const [form,setForm] = useState({
@@ -21,7 +30,7 @@ const InputAmount = ({route,navigation}) => {
     if (val.trim().length > 0){
       setForm({
         ...form,
-        amount:val,
+        amount:val.toLocaleString('id',{style:'currency',currency:'IDR'}),
         isValidAmount:true,
       });
     } else {
@@ -56,7 +65,7 @@ const InputAmount = ({route,navigation}) => {
     };
 
     dispatch(addAmountNoteCreator(data));
-    navigation.navigate('PinConfirmation',{item});
+    navigation.navigate('Confirmation',{item});
   };
 
   const {item} = route.params;
@@ -86,7 +95,7 @@ const InputAmount = ({route,navigation}) => {
               />
               }
             <View style={Styles.textContent}>
-              <Text style={Styles.textName}>{item.firstname} {item.lastname}</Text>
+              <Text style={Styles.textName}>{item.username}</Text>
               <Text style={Styles.phone}>{item.phone}</Text>
             </View>
           </View>
@@ -100,7 +109,7 @@ const InputAmount = ({route,navigation}) => {
         keyboardType="numeric"
         onChangeText={handleInputAmount}
         />
-        <Text style={Styles.description}>{item.balance} Available</Text>
+        <Text style={Styles.description}>{userProfile[0].balance.toLocaleString('id',{style:'currency',currency:'IDR'})} Available</Text>
         {form.isValidNote ?
         <View style={Styles.formNoteFilled}>
           <Feather style={Styles.iconNote} name="edit-2" size={25} color="#6379F4"/>

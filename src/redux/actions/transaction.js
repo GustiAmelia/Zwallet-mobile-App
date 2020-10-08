@@ -1,5 +1,5 @@
 import * as actions from '../actions/actionTypes';
-import {addDataTransfer} from '../../services/urlApi';
+import {addDataTransfer,allTransaction} from '../../services/urlApi';
 
 export const addAmountNoteCreator = (data)=>{
   return {
@@ -8,10 +8,31 @@ export const addAmountNoteCreator = (data)=>{
   };
 };
 
-export const transfer = (category_id,amount,sender_id,receiver_id,note)=>{
+export const transfer = (category,amount,sender_id,receiver_id,note)=>{
   return {
     type:actions.addTransfer,
-    payload:addDataTransfer(category_id,amount,sender_id,receiver_id,note),
+    payload:addDataTransfer(category,amount,sender_id,receiver_id,note),
+  };
+};
+
+export const history = (id)=>{
+  return {
+    type :actions.allTransaction,
+    payload:allTransaction(id),
+  };
+};
+
+export const incomeCreator = (dataIncome)=>{
+  return {
+    type :actions.income,
+    payload:dataIncome,
+  };
+};
+
+export const outCreator = (dataOut)=>{
+  return {
+    type :actions.out,
+    payload:dataOut,
   };
 };
 

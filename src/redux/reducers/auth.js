@@ -9,6 +9,7 @@ const initialState = {
   register:false,
   pinSuccess:false,
   isValidPin:false,
+  pinChangeSuccess:false,
 };
 
 const authReducers = (state = initialState,action) => {
@@ -98,6 +99,32 @@ const authReducers = (state = initialState,action) => {
         register:true,
         pinSuccess:pinSuccess,
       };
+    case actions.changePin + actions.pending:
+      return {
+        ...state,
+        isPending:true,
+      };
+    case actions.changePin + actions.rejected:
+      return {
+        ...state,
+        isRejected:true,
+        isPending:false,
+      };
+    case actions.changePin + actions.fulfilled:
+      let changePinSuccess = null;
+      if (action.payload.data.isSuccess){
+        changePinSuccess = true;
+      } else {
+        changePinSuccess = false;
+      }
+      return {
+        ...state,
+        isFulfilled: true,
+        isPending: false,
+        isRejected: false,
+        changePinSuccess:changePinSuccess,
+        isValidPin:false,
+      };
     case actions.checkPin + actions.pending:
       return {
         ...state,
@@ -130,6 +157,7 @@ const authReducers = (state = initialState,action) => {
         isFulfilled: false,
         isRejected: false,
         register:false,
+        isValidPin:false,
       };
     case actions.backHome:
       return {

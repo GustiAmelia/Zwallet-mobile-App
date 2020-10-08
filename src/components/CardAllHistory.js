@@ -1,36 +1,32 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 
-import { View, Text,Image, StyleSheet} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import { View, Text,Image, StyleSheet,Feather} from 'react-native';
 
-const CardTransaction = ({item}) => {
-
+const CardAllHistory = ({item}) => {
   const loginUser = useSelector((state)=>state.auth.data);
-
   const regex = /localhost/;
   const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
-
   return (
     <View style={Styles.contenCard}>
       <View style={Styles.leftContent}>
-        {item.avatar !== '' ?
-        <Image
-        style={Styles.image}
-        source={{uri:newUrlImage}}/>
-        :
-        <Feather
-        style={Styles.imageNoPict}
-        name="user" size={40} color="#6379F4"
-        />
-        }
+        {item.avatar !== null ?
+          <Image
+          style={Styles.image}
+          source={{uri:newUrlImage}}/>
+          :
+          <Feather
+          style={Styles.imageNoPict}
+          name="user" size={40} color="#6379F4"
+          />
+          }
         <View style={Styles.textLeftContent}>
           <Text style={Styles.textName}>{item.username}</Text>
           <Text style={Styles.description}>{item.category}</Text>
         </View>
       </View>
       <View style={Styles.rightContent}>
-        {loginUser.id === item.receiver_id
+      {loginUser.id === item.receiver_id
         ?
         <Text style={Styles.nominalIn}>+{item.amount.toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
         :
@@ -41,7 +37,7 @@ const CardTransaction = ({item}) => {
   );
 };
 
-export default CardTransaction;
+export default CardAllHistory;
 
 const Styles = StyleSheet.create({
   contenCard:{

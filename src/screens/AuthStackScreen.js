@@ -7,6 +7,7 @@ import Login from './Login';
 import SignUp from './SingUp';
 import CreatePin from './CreatePin';
 import PinSuccess from './PinSuccess';
+import ForgotPassword from './ForgotPassword';
 
 const AuthStack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const AuthStackScreen = ({navigation})=> {
       <>
         <AuthStack.Screen name="Login" component={Login}/>
         <AuthStack.Screen name="SignUp" component={SignUp}/>
+        <AuthStack.Screen name="ForgotPassword" component={ForgotPassword}/>
       </>
       }
     </AuthStack.Navigator>

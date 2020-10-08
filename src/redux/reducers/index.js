@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import authReducers from './auth';
-import receiverReducers from './receiver';
+import userReducers from './user';
 import transactionReducers from './transaction';
 
 
 const indexReducer = combineReducers({
     auth : authReducers,
-    receiver : receiverReducers,
+    user : userReducers,
     transaction : transactionReducers,
 });
 

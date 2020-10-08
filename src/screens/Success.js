@@ -4,24 +4,26 @@ import {useSelector,useDispatch} from 'react-redux';
 import { View, Text,StatusBar, StyleSheet, Image, ScrollView,TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../shared/globalStyles';
-import moment from 'moment';
 
 import {backToHome} from '../redux/actions/auth';
+import {getUserCreator} from '../redux/actions/user';
+import {history} from '../redux/actions/transaction';
 
 const Success = ({route,navigation}) => {
 
   const dispatch = useDispatch();
   const handleBackHome = ()=>{
     dispatch(backToHome());
+    dispatch(getUserCreator());
+    dispatch(history(sender.id));
     navigation.navigate('Home');
   };
 
   const sender = useSelector((state)=>state.auth.data);
   const amount = useSelector((state)=>state.transaction.amount);
   const note = useSelector((state)=>state.transaction.note);
-  const date = moment(new Date()).format('MMMM D,YYYY');
-  const time = moment(new Date()).format('HH:mm');
-
+  const {date} = route.params;
+  const {time} = route.params;
   const {item} = route.params;
   const regex = /localhost/;
   const newUrlImageSender = sender.avatar.replace(regex,'192.168.43.73');
@@ -40,11 +42,11 @@ const Success = ({route,navigation}) => {
           <View style={Styles.wrapperDetails}>
             <View style={Styles.amount}>
               <Text style={Styles.detailTitle}>Amount</Text>
-              <Text style={Styles.total}>{amount}</Text>
+              <Text style={Styles.total}>{Number(amount).toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
             </View>
             <View style={Styles.balance}>
               <Text style={Styles.detailTitle}>Balance Left</Text>
-              <Text style={Styles.total}>{sender.balance - amount}</Text>
+              <Text style={Styles.total}>{(sender.balance - amount).toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
             </View>
           </View>
           <View style={Styles.wrapperDetails}>
@@ -75,7 +77,7 @@ const Success = ({route,navigation}) => {
               />
               }
               <View style={Styles.textContent}>
-                <Text style={Styles.textName}>{sender.firstname} {sender.lastname}</Text>
+                <Text style={Styles.textName}>{sender.username}</Text>
                 <Text style={Styles.phone}>{sender.phone}</Text>
               </View>
             </View>
@@ -94,7 +96,7 @@ const Success = ({route,navigation}) => {
               />
               }
               <View style={Styles.textContent}>
-                <Text style={Styles.textName}>{item.firstname} {item.lastname}</Text>
+                <Text style={Styles.textName}>{item.username}</Text>
                 <Text style={Styles.phone}>{item.phone}</Text>
               </View>
             </View>
@@ -144,7 +146,6 @@ const Styles = StyleSheet.create({
   wrapperDetails:{
     flexDirection:'row',
     justifyContent:'space-between',
-    // justifyContent:'space-around',
     marginHorizontal:16,
     marginVertical:10,
   },

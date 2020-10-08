@@ -1,36 +1,110 @@
-import React, {useState} from 'react';
-import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import React,{useState} from 'react';
+import {useSelector,useDispatch} from 'react-redux';
+
+import { View, Text,StatusBar, StyleSheet ,SectionList, TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import globalStyles from '../shared/globalStyles';
-import CardCategory from '../components/CardCategoryHistory';
+import { DateTime } from 'luxon';
+import CardAllHistory from '../components/CardAllHistory';
+
+import {incomeCreator,outCreator} from '../redux/actions/transaction';
+
+const startOfTheWeek = DateTime.local().startOf('week').toISODate();
+const endOfTheWeek = DateTime.local()
+  .startOf('week')
+  .plus({ days: 7 })
+  .toISODate();
+const startOfTheMonth = DateTime.local().startOf('month').toISODate();
+const endOfTheMonth = DateTime.local()
+  .startOf('month')
+  .plus({ days: 30 })
+  .toISODate();
 
 const History = ({navigation}) => {
 
-  const category = [{category:'This Week'},{category:'This Month'}];
+  const dispatch = useDispatch();
+
+  const loginUser = useSelector((state)=>state.auth.data);
+  const allHistory = useSelector((state)=>state.transaction.allHistory);
+  const dataIn = useSelector((state)=>state.transaction.income);
+  const dataOut = useSelector((state)=>state.transaction.out);
+  console.log(dataIn);
+  console.log(dataOut);
+
+  const transferIn = allHistory.filter(value=>{return value.receiver_id === loginUser.id;});
+  const transferOut = allHistory.filter(value=>{return value.receiver_id !== loginUser.id;});
+
+  const thisWeek = allHistory.filter((history) => {
+    return (
+      DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+        startOfTheWeek &&
+      DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheWeek
+    );
+  });
+  const thisMonth = allHistory.filter((history) => {
+    return (
+      !thisWeek.includes(history) &&
+      DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+        startOfTheMonth &&
+      DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheMonth
+    );
+  });
+
+  const historyData = [
+    {
+      date: 'This Week',
+      data: thisWeek,
+    },
+    {
+      date: 'This Month',
+      data: thisMonth,
+    },
+  ];
+
+  const handleArrowUp = ()=>{
+    dispatch(incomeCreator(transferIn));
+    dispatch(outCreator(null));
+  };
+
+  const handleArrowDown = ()=>{
+    dispatch(outCreator(transferOut));
+    dispatch(incomeCreator(null));
+  };
+
+  const handleBack = ()=>{
+    navigation.navigate('Home');
+    dispatch(outCreator(null));
+    dispatch(incomeCreator(null));
+  };
 
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#6379F4" />
       <View style={Styles.header}>
-        <TouchableOpacity style={Styles.contentHeader}>
+        <TouchableOpacity onPress={handleBack} style={Styles.contentHeader}>
           <Feather style={Styles.iconBack} name="arrow-left" size={30} color="#FFFFFF"/>
           <Text style={Styles.textHeader}>History</Text>
         </TouchableOpacity>
       </View>
       <View style={Styles.footer}>
-        <FlatList
-        data={category}
-        renderItem={({item})=>{
-          return (
-            <CardCategory item={item}/>
-          );
-        }}
-        />
+      <SectionList
+        style={Styles.sectionList}
+        sections={historyData}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => <CardAllHistory item={item} />}
+        renderSectionHeader={({ section: { date, data } }) =>
+          data.length === 0 ? null : (
+            <View>
+              <Text style={Styles.date}>{date}</Text>
+            </View>
+          )
+        }
+      />
         <View style={Styles.filterButton}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleArrowUp}>
             <Feather style={Styles.iconButton} name="arrow-up" size={30} color="#FF5B37"/>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleArrowDown}>
             <Feather style={Styles.iconButton} name="arrow-down" size={30} color="#1EC15F"/>
           </TouchableOpacity>
           <TouchableOpacity style={Styles.buttonDate}>
@@ -94,6 +168,14 @@ const Styles = StyleSheet.create({
     fontSize:18,
     color:'#6379F4',
     fontWeight:'bold',
+  },
+  date: {
+    color: '#7A7886',
+    fontSize: 16,
+    marginTop: 20,
+    marginBottom: 10,
+    padding: 15,
+    fontWeight: 'bold',
   },
 
 });

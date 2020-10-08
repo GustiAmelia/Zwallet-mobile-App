@@ -1,35 +1,41 @@
-import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-require('number-to-locale-string-polyfill');
+import React,{useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+
 
 import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity,FlatList } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
 import CardTransaction from '../components/CardTransaction';
-import {getReceiver} from '../redux/actions/receiver';
+
+import {history} from '../redux/actions/transaction';
 
 
 const Home = ({navigation}) => {
-
-  const user = useSelector((state)=>state.auth.data);
-  console.log(user.id);
-
-  const regex = /localhost/;
-  const newUrlImage = user.avatar.replace(regex,'192.168.43.73');
-
   const dispatch = useDispatch();
 
+  //data from redux auth
+  const loginUser = useSelector((state)=>state.auth.data);
+
+  //data from redux user
+  const user = useSelector((state)=>state.user.user);
+
+  //filter data profile from user
+  const userProfile = user.filter(value=>{return value.id === loginUser.id;});
+
+  //data history
+  const homeHistory = useSelector((state)=>state.transaction.homeHistory);
+
+  const regex = /localhost/;
+  const newUrlImage = userProfile[0].avatar.replace(regex,'192.168.43.73');
+
   const handleButtonTransfer = ()=>{
-    dispatch(getReceiver(user.id));
     navigation.navigate('Search');
   };
 
-  const data = [
-    {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
-    {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
-    {name:'Samuel Suhi', description:'Transfer', total:'+Rp50.000'},
-  ];
+  useEffect(() => {
+    dispatch(history(loginUser.id));
+  },[]);
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="default" backgroundColor="#6379F4"/>
@@ -38,7 +44,7 @@ const Home = ({navigation}) => {
           <TouchableOpacity
             onPress={()=>navigation.navigate('Profile')}
             style={Styles.leftContent}>
-            {user.avatar !== '' ?
+            {userProfile[0].avatar !== '' ?
             <Image
             style={Styles.image}
             source={{uri:newUrlImage}}/>
@@ -50,7 +56,7 @@ const Home = ({navigation}) => {
             }
             <View style={Styles.textLeftContent}>
               <Text style={Styles.textHeader}>Balance</Text>
-              <Text style={Styles.nominalHeader}>{user.balance.toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
+              <Text style={Styles.nominalHeader}>{userProfile[0].balance.toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
             </View>
           </TouchableOpacity>
           <View style={Styles.rightContent}>
@@ -80,7 +86,7 @@ const Home = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={data}
+          data={homeHistory}
           renderItem={({item})=>{
             return (
               <CardTransaction item={item}/>

@@ -1,14 +1,18 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React,{useState} from 'react';
+import {useSelector,useDispatch} from 'react-redux';
 
 import { View, Text, StatusBar, StyleSheet, TouchableOpacity,FlatList, TextInput } from 'react-native';
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 import CardContacs from '../components/CardContacts';
+import {searchContactCreator} from '../redux/actions/user';
 
 const Search = ({navigation}) => {
-
-  const receiver = useSelector((state)=>state.receiver.receiver);
+  const dispatch = useDispatch();
+  const receiver = useSelector((state)=>state.user.user);
+  const sender = useSelector((state)=>state.auth.data);
+  const [search, setSearch] = useState('');
+  const resultSearch = useSelector((state)=>state.user.contact);
 
   return (
     <View style={globalStyles.container}>
@@ -26,6 +30,9 @@ const Search = ({navigation}) => {
           </TouchableOpacity>
           <TextInput
           placeholder="Search receiver here"
+          value={search}
+          onChangeText={(val)=>setSearch(val)}
+          onSubmitEditing={()=>dispatch(searchContactCreator(search))}
           />
         </View>
       </View>
@@ -34,16 +41,29 @@ const Search = ({navigation}) => {
           <Text style={Styles.title}>Contacs</Text>
             <Text style={Styles.description}>{receiver.length} contacs Found</Text>
         </View>
-        <FlatList
-          data={receiver}
-          renderItem={({item})=>{
-            return (
-              <TouchableOpacity onPress={()=>navigation.navigate('InputAmount',{item})}>
-                <CardContacs item={item}/>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        {resultSearch === null ?
+          <FlatList
+            data={receiver.filter(value=>{return value.id !== sender.id;})}
+            renderItem={({item})=>{
+              return (
+                <TouchableOpacity onPress={()=>navigation.navigate('InputAmount',{item})}>
+                  <CardContacs item={item}/>
+                </TouchableOpacity>
+              );
+            }}
+          />
+          :
+          <FlatList
+            data={resultSearch.filter(value=>{return value.id !== sender.id;})}
+            renderItem={({item})=>{
+              return (
+                <TouchableOpacity onPress={()=>navigation.navigate('InputAmount',{item})}>
+                  <CardContacs item={item}/>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        }
       </View>
     </View>
   );

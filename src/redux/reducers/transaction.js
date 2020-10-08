@@ -4,6 +4,10 @@ const initialState = {
   amount:null,
   note:null,
   transferSuccess:false,
+  allHistory:null,
+  homeHistory:null,
+  income :null,
+  out:null,
 };
 
 const transaction = (state = initialState, action)=>{
@@ -24,7 +28,6 @@ const transaction = (state = initialState, action)=>{
         ...state,
         isRejected:true,
         isPending:false,
-        data: action.payload,
       };
     case actions.addTransfer + actions.fulfilled:
       let transfer = null;
@@ -36,6 +39,35 @@ const transaction = (state = initialState, action)=>{
       return {
         ...state,
         transferSuccess:transfer,
+      };
+    case actions.allTransaction + actions.pending:
+      return {
+        ...state,
+        isPending:true,
+      };
+    case actions.allTransaction + actions.rejected:
+      return {
+        ...state,
+        isRejected:true,
+        isPending:false,
+        allHistory: action.payload,
+        homeHistory:action.payload,
+      };
+    case actions.allTransaction + actions.fulfilled:
+      return {
+        ...state,
+        allHistory:action.payload.data.results,
+        homeHistory:action.payload.data.results.slice(0,3),
+      };
+    case actions.income:
+      return {
+        ...state,
+        income:action.payload,
+      };
+    case actions.out:
+      return {
+        ...state,
+        out:action.payload,
       };
     default:
       return state;

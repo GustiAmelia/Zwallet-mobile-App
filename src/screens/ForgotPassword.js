@@ -8,16 +8,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import {getLogin} from '../redux/actions/auth';
 
 
-const Login = ({navigation}) => {
+const ForgotPassword = ({navigation}) => {
 
   const login = useSelector((state)=>state.auth.isLoggedIn);
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     email: null,
-    password: null,
     isValidEmail:false,
-    isValidPassword:false,
   });
 
   const handleEmail = (val)=>{
@@ -35,32 +33,7 @@ const Login = ({navigation}) => {
       });
     }
   };
-  const [data,setData] = useState({
-    secureTextEntry: true,
-  });
 
-  const handlePassword = (val)=>{
-    if (val.trim().length > 0){
-      setForm({
-        ...form,
-        password:val,
-        isValidPassword:true,
-      });
-    } else {
-      setForm({
-        ...form,
-        password:val,
-        isValidPassword:false,
-      });
-    }
-  };
-
-  const updateSecureTextEntry = () => {
-    setData({
-        ...data,
-        secureTextEntry: !data.secureTextEntry,
-    });
-  };
 
   const handleSignIn = ()=>{
     dispatch(getLogin(form.email,form.password));
@@ -78,8 +51,8 @@ const Login = ({navigation}) => {
         <Text style={Styles.textHeader}>Zwallet</Text>
       </View>
       <View style={Styles.footer}>
-        <Text style={Styles.title}>Login</Text>
-        <Text style={Styles.text}>Login to your existing account to access all the features in Zwallet.</Text>
+        <Text style={Styles.title}>Reset Password</Text>
+        <Text style={Styles.text}>Enter your Zwallet e-mail so we can send you a password reset link.</Text>
         {form.isValidEmail ?
           <View style={Styles.formFilled}>
             <Feather
@@ -107,93 +80,19 @@ const Login = ({navigation}) => {
             />
           </View>
         }
-        {form.isValidPassword ?
-          <View style={Styles.formFilled}>
-            <Feather
-            style={Styles.icon}
-            name="lock" size={20} color="#6379F4"/>
-            <TextInput
-              style={Styles.textInput}
-              placeholder="Enter your password"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              autoCapitalize="none"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              onChangeText={handlePassword}
-            />
-            <View style={Styles.iconSecurity}>
-              <TouchableOpacity
-                onPress={updateSecureTextEntry}>
-                  {data.secureTextEntry ?
-                    <Feather
-                        name="eye-off"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                    :
-                    <Feather
-                        name="eye"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                  }
-              </TouchableOpacity>
-            </View>
-          </View>
-        :
-          <View style={Styles.formBlank}>
-            <Feather
-            style={Styles.icon}
-            name="lock" size={20} color="rgba(169, 169, 169, 0.6)"/>
-            <TextInput
-              style={Styles.textInput}
-              placeholder="Enter your password"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              autoCapitalize="none"
-              secureTextEntry={data.secureTextEntry ? true : false}
-              onChangeText={handlePassword}
-            />
-            <View style={Styles.iconSecurity}>
-              <TouchableOpacity
-                onPress={updateSecureTextEntry}>
-                  {data.secureTextEntry ?
-                    <Feather
-                        name="eye-off"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                    :
-                    <Feather
-                        name="eye"
-                        color="rgba(169, 169, 169, 0.6)"
-                        size={20}
-                    />
-                  }
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-        <TouchableOpacity onPress={()=>navigation.navigate('ForgotPassword')}>
-          <Text style={Styles.textForgot}>Forgot password?</Text>
-        </TouchableOpacity>
-        {form.isValidEmail && form.isValidPassword ?
+        {form.isValidEmail ?
         <TouchableOpacity onPress={handleSignIn}>
-          <Text style={Styles.buttonLoginFilled}>Login</Text>
+          <Text style={Styles.buttonLoginFilled}>Confirm</Text>
         </TouchableOpacity>
         :
-        <Text style={Styles.buttonLoginBlank}>Login</Text>
+        <Text style={Styles.buttonLoginBlank}>Confirm</Text>
         }
-        <View style={Styles.question}>
-          <Text style={Styles.textQuestion}>Don’t have an account? Let’s </Text>
-          <TouchableOpacity>
-            <Text style={Styles.textLink} onPress={()=>navigation.navigate('SignUp')}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
 };
 
-export default Login;
+export default ForgotPassword;
 
 const Styles = StyleSheet.create({
   header:{
@@ -271,14 +170,6 @@ const Styles = StyleSheet.create({
   iconSecurity:{
     justifyContent:'center',
   },
-  textForgot:{
-    paddingVertical:5,
-    textAlign:'right',
-    marginLeft:'60%',
-    marginRight:26,
-    color:'rgba(58, 61, 66, 0.8)',
-    fontSize:14,
-  },
   buttonLoginBlank:{
     marginTop:30,
     textAlign:'center',
@@ -320,20 +211,6 @@ const Styles = StyleSheet.create({
     shadowRadius: 75,
 
     elevation:3,
-  },
-  question:{
-    marginVertical:25,
-    flexDirection:'row',
-    marginHorizontal:55,
-  },
-  textQuestion:{
-    fontSize:16,
-    color:'#88888F',
-  },
-  textLink:{
-    fontSize:16,
-    color:'#6379F4',
-    fontWeight:'bold',
   },
 });
 
