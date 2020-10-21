@@ -63,12 +63,12 @@ const History = ({navigation}) => {
   //   },
   // ];
 
-  const handleArrowUp = ()=>{
+  const handleArrowDown = ()=>{
     dispatch(incomeCreator(transferIn));
     dispatch(outCreator(null));
   };
 
-  const handleArrowDown = ()=>{
+  const handleArrowUp = ()=>{
     dispatch(outCreator(transferOut));
     dispatch(incomeCreator(null));
   };
