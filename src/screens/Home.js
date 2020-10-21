@@ -166,6 +166,7 @@ const Styles = StyleSheet.create({
     paddingVertical:10,
     borderRadius:10,
     backgroundColor:'#E5E8ED',
+    elevation:10,
   },
   transaction:{
     flexDirection:'row',

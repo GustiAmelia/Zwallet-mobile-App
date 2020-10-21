@@ -28,8 +28,8 @@ const Confirmation = ({route,navigation}) => {
   };
 
   const {item} = route.params;
-  // const regex = /localhost/;
-  // const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+  const regex = /localhost/;
+  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
 
   return (
     <ScrollView style={globalStyles.container}>
@@ -46,7 +46,7 @@ const Confirmation = ({route,navigation}) => {
             {item.avatar !== '' ?
               <Image
               style={Styles.image}
-              source={{uri:item.avatar}}/>
+              source={{uri:newUrlImage}}/>
               :
               <Feather
               style={Styles.imageNoPict}
@@ -173,8 +173,8 @@ const Styles = StyleSheet.create({
     paddingLeft:16,
     paddingVertical:5,
     borderRadius:10,
-    borderWidth:1,
-    width:'45%',
+    elevation:5,
+    width:'50%',
     marginRight:5,
   },
   balance:{
@@ -182,16 +182,16 @@ const Styles = StyleSheet.create({
     paddingLeft:16,
     paddingVertical:5,
     borderRadius:10,
-    borderWidth:1,
-    width:'45%',
+    elevation:5,
+    width:'50%',
   },
   date:{
     backgroundColor:'#ffffff',
     paddingLeft:16,
     paddingVertical:5,
     borderRadius:10,
-    borderWidth:1,
-    width:'45%',
+    elevation:5,
+    width:'50%',
     marginRight:5,
   },
   time:{
@@ -199,8 +199,8 @@ const Styles = StyleSheet.create({
     paddingLeft:16,
     paddingVertical:5,
     borderRadius:10,
-    borderWidth:1,
-    width:'45%',
+    elevation:5,
+    width:'50%',
   },
   detailTitle:{
     color:'#7A7886',
@@ -218,7 +218,7 @@ const Styles = StyleSheet.create({
     paddingLeft:16,
     paddingVertical:5,
     borderRadius:10,
-    borderWidth:1,
+    elevation:5,
     marginHorizontal:16,
     marginVertical:10,
   },

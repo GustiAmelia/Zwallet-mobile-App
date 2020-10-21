@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
 import CardAllHistory from '../components/CardAllHistory';
 
 import {incomeCreator,outCreator} from '../redux/actions/transaction';
+import { FlatList } from 'react-native-gesture-handler';
 
 const startOfTheWeek = DateTime.local().startOf('week').toISODate();
 const endOfTheWeek = DateTime.local()
@@ -34,32 +35,33 @@ const History = ({navigation}) => {
   const transferIn = allHistory.filter(value=>{return value.receiver_id === loginUser.id;});
   const transferOut = allHistory.filter(value=>{return value.receiver_id !== loginUser.id;});
 
-  const thisWeek = allHistory.filter((history) => {
-    return (
-      DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
-        startOfTheWeek &&
-      DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheWeek
-    );
-  });
-  const thisMonth = allHistory.filter((history) => {
-    return (
-      !thisWeek.includes(history) &&
-      DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
-        startOfTheMonth &&
-      DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheMonth
-    );
-  });
 
-  const historyData = [
-    {
-      date: 'This Week',
-      data: thisWeek,
-    },
-    {
-      date: 'This Month',
-      data: thisMonth,
-    },
-  ];
+  // const thisWeek = allHistory.filter((history) => {
+  //   return (
+  //     DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+  //       startOfTheWeek &&
+  //     DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheWeek
+  //   );
+  // });
+  // const thisMonth = allHistory.filter((history) => {
+  //   return (
+  //     !thisWeek.includes(history) &&
+  //     DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+  //       startOfTheMonth &&
+  //     DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheMonth
+  //   );
+  // });
+
+  // const historyData = [
+  //   {
+  //     date: 'This Week',
+  //     data: thisWeek,
+  //   },
+  //   {
+  //     date: 'This Month',
+  //     data: thisMonth,
+  //   },
+  // ];
 
   const handleArrowUp = ()=>{
     dispatch(incomeCreator(transferIn));
@@ -77,6 +79,130 @@ const History = ({navigation}) => {
     dispatch(incomeCreator(null));
   };
 
+  let listHistory;
+  if (dataIn === null && dataOut === null){
+    const thisWeek = allHistory.filter((history) => {
+      return (
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+          startOfTheWeek &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheWeek
+      );
+    });
+    const thisMonth = allHistory.filter((history) => {
+      return (
+        !thisWeek.includes(history) &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+          startOfTheMonth &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheMonth
+      );
+    });
+    const historyData = [
+      {
+        date: 'This Week',
+        data: thisWeek,
+      },
+      {
+        date: 'This Month',
+        data: thisMonth,
+      },
+    ];
+
+    listHistory =
+              <SectionList
+              style={Styles.sectionList}
+              sections={historyData}
+              keyExtractor={(item, index) => item + index}
+              renderItem={({ item }) => <CardAllHistory item={item} />}
+              renderSectionHeader={({ section: { date, data } }) =>
+                data.length === 0 ? null : (
+                  <View>
+                    <Text style={Styles.date}>{date}</Text>
+                  </View>
+                )
+              }
+              />
+  }
+  else if (dataIn !== null){
+    const thisWeek = dataIn.filter((history) => {
+      return (
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+          startOfTheWeek &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheWeek
+      );
+    });
+    const thisMonth = dataIn.filter((history) => {
+      return (
+        !thisWeek.includes(history) &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+          startOfTheMonth &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheMonth
+      );
+    });
+    const historyData = [
+      {
+        date: 'This Week',
+        data: thisWeek,
+      },
+      {
+        date: 'This Month',
+        data: thisMonth,
+      },
+    ];
+    listHistory = <SectionList
+                  style={Styles.sectionList}
+                  sections={historyData}
+                  keyExtractor={(item, index) => item + index}
+                  renderItem={({ item }) => <CardAllHistory item={item} />}
+                  renderSectionHeader={({ section: { date, data } }) =>
+                    data.length === 0 ? null : (
+                      <View>
+                        <Text style={Styles.date}>{date}</Text>
+                      </View>
+                    )
+                  }
+                  />
+  }
+  else {
+    const thisWeek = dataOut.filter((history) => {
+      return (
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+          startOfTheWeek &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheWeek
+      );
+    });
+    const thisMonth = dataOut.filter((history) => {
+      return (
+        !thisWeek.includes(history) &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() >=
+          startOfTheMonth &&
+        DateTime.fromISO(history.date.split(' ')[0]).toISODate() <= endOfTheMonth
+      );
+    });
+    const historyData = [
+      {
+        date: 'This Week',
+        data: thisWeek,
+      },
+      {
+        date: 'This Month',
+        data: thisMonth,
+      },
+    ];
+    listHistory = <SectionList
+                  style={Styles.sectionList}
+                  sections={historyData}
+                  keyExtractor={(item, index) => item + index}
+                  renderItem={({ item }) => <CardAllHistory item={item} />}
+                  renderSectionHeader={({ section: { date, data } }) =>
+                    data.length === 0 ? null : (
+                      <View>
+                        <Text style={Styles.date}>{date}</Text>
+                      </View>
+                    )
+                  }
+                  />
+  }
+
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#6379F4" />
@@ -87,19 +213,7 @@ const History = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={Styles.footer}>
-      <SectionList
-        style={Styles.sectionList}
-        sections={historyData}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <CardAllHistory item={item} />}
-        renderSectionHeader={({ section: { date, data } }) =>
-          data.length === 0 ? null : (
-            <View>
-              <Text style={Styles.date}>{date}</Text>
-            </View>
-          )
-        }
-      />
+        {listHistory}
         <View style={Styles.filterButton}>
           <TouchableOpacity onPress={handleArrowUp}>
             <Feather style={Styles.iconButton} name="arrow-up" size={30} color="#FF5B37"/>

@@ -18,7 +18,9 @@ const Login = ({navigation}) => {
     password: null,
     isValidEmail:false,
     isValidPassword:false,
+    loginFailed : null,
   });
+  console.log(form.loginFailed);
 
   const handleEmail = (val)=>{
     if (val.trim().length > 0){

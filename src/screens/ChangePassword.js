@@ -10,7 +10,6 @@ import Axios from 'axios';
 const ChangePassword = ({navigation}) => {
 
   const user = useSelector((state)=>state.auth.data);
-  console.log(user.email)
 
   const [form, setForm] = useState({
     currentPassword:null,
