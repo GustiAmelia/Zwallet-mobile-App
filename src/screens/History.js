@@ -215,12 +215,24 @@ const History = ({navigation}) => {
       <View style={Styles.footer}>
         {listHistory}
         <View style={Styles.filterButton}>
-          <TouchableOpacity onPress={handleArrowUp}>
-            <Feather style={Styles.iconButton} name="arrow-up" size={30} color="#FF5B37"/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleArrowDown}>
-            <Feather style={Styles.iconButton} name="arrow-down" size={30} color="#1EC15F"/>
-          </TouchableOpacity>
+          {dataOut === null ?
+            <TouchableOpacity onPress={handleArrowUp}>
+              <Feather style={Styles.iconButton} name="arrow-up" size={30} color="#FF5B37"/>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity onPress={handleArrowUp}>
+              <Feather style={Styles.iconButtonSelect} name="arrow-up" size={30} color="#ffffff"/>
+            </TouchableOpacity>
+          }
+          {dataIn === null ?
+            <TouchableOpacity onPress={handleArrowDown}>
+              <Feather style={Styles.iconButton} name="arrow-down" size={30} color="#1EC15F"/>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity onPress={handleArrowDown}>
+              <Feather style={Styles.iconButtonSelect} name="arrow-down" size={30} color="#ffffff"/>
+            </TouchableOpacity>
+          }
           <TouchableOpacity style={Styles.buttonDate}>
             <Text style={Styles.textButton}>Filter by Date</Text>
           </TouchableOpacity>
@@ -267,6 +279,13 @@ const Styles = StyleSheet.create({
     padding:10,
     borderRadius:10,
     backgroundColor:'#FFFFFF',
+    marginRight:20,
+    elevation:5,
+  },
+  iconButtonSelect:{
+    padding:10,
+    borderRadius:10,
+    backgroundColor:'#6379F4',
     marginRight:20,
     elevation:5,
   },
