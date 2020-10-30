@@ -210,6 +210,7 @@ const Styles = StyleSheet.create({
   },
   footer:{
     flex:4,
+    paddingBottom:30,
   },
   inputBlank:{
     fontSize:42,

@@ -28,7 +28,7 @@ const Profile = ({navigation}) => {
 
   const alert = () => {
     Alert.alert(
-      'File Too Larger',
+      'File Too Large',
       '',
       [{text: 'OK', onPress: () => console.log('OK Pressed')}],
       {cancelable: false},
@@ -56,7 +56,7 @@ const Profile = ({navigation}) => {
       } else {
         console.log(response);
         const source = response;
-        if (response.fileSize > 200000) {
+        if (response.fileSize > 200000000) {
           setImage(null);
           alert();
         } else {

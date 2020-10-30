@@ -107,12 +107,9 @@ const SignUp = ({navigation}) => {
         ...form,
         messageEmail:null,
         messagePassword:null,
-      })
+      });
     }
   };
-
-  console.log(form.messageEmail);
-  console.log(form.messagePassword);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

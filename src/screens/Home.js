@@ -16,18 +16,10 @@ const Home = ({navigation}) => {
 
   //data from redux auth
   const loginUser = useSelector((state)=>state.auth.data);
-
-  //data from redux user
-  const user = useSelector((state)=>state.user.user);
-
-  //filter data profile from user
-  const userProfile = user.filter(value=>{return value.id === loginUser.id;});
+  console.log(loginUser);
 
   //data history
   const homeHistory = useSelector((state)=>state.transaction.homeHistory);
-
-  const regex = /localhost/;
-  const newUrlImage = userProfile[0].avatar.replace(regex,'192.168.43.73');
 
   const handleButtonTransfer = ()=>{
     navigation.navigate('Search');
@@ -36,6 +28,30 @@ const Home = ({navigation}) => {
   useEffect(() => {
     dispatch(history(loginUser.id));
   },[]);
+
+  //data from redux user
+  const user = useSelector((state)=>state.user.user);
+  console.log(user);
+
+  //filter data profile from user
+  const userProfile = user.filter(value=>{return value.id === loginUser.id;});
+  console.log(userProfile);
+
+  const regex = /localhost/;
+  let newUrlImage;
+  let data;
+  if (userProfile.length === 0){
+    data = loginUser;
+    if (loginUser.avatar === ''){
+        newUrlImage = loginUser.avatar.replace(regex,'192.168.43.73');
+    }
+  } else {
+   data = userProfile[0];
+    if (userProfile[0].avatar === ''){
+      newUrlImage = userProfile[0].avatar.replace(regex,'192.168.43.73');
+    }
+  }
+
   return (
     <View style={globalStyles.container}>
       <StatusBar barStyle="default" backgroundColor="#6379F4"/>
@@ -44,7 +60,7 @@ const Home = ({navigation}) => {
           <TouchableOpacity
             onPress={()=>navigation.navigate('Profile')}
             style={Styles.leftContent}>
-            {userProfile[0].avatar !== '' ?
+            {data.avatar !== '' ?
             <Image
             style={Styles.image}
             source={{uri:newUrlImage}}/>
@@ -56,7 +72,7 @@ const Home = ({navigation}) => {
             }
             <View style={Styles.textLeftContent}>
               <Text style={Styles.textHeader}>Balance</Text>
-              <Text style={Styles.nominalHeader}>{userProfile[0].balance.toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
+              <Text style={Styles.nominalHeader}>{data.balance.toLocaleString('id',{style:'currency',currency:'IDR'})}</Text>
             </View>
           </TouchableOpacity>
           <View style={Styles.rightContent}>
