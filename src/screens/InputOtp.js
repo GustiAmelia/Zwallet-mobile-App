@@ -5,40 +5,15 @@ import { View, Text,StatusBar, StyleSheet, TextInput, TouchableOpacity} from 're
 import globalStyles from '../shared/globalStyles';
 import Feather from 'react-native-vector-icons/Feather';
 
-import {checkPinIsValid} from '../redux/actions/auth';
-import {transfer} from '../redux/actions/transaction';
 
-const PinConfirmation = ({route,navigation}) => {
+const InputOtp = ({navigation}) => {
 
-  const {item} = route.params;
-  const {date} = route.params;
-  const {time} = route.params;
-
-  const [data,setData] = useState({msg:null});
-
-  const email = useSelector((state)=>state.auth.data.email);
-  const validPin = useSelector((state)=>state.auth.isValidPin);
-  const amount = useSelector((state)=>state.transaction.amount);
-  const note = useSelector((state)=>state.transaction.note);
-  const sender = useSelector((state)=>state.auth.data);
-  const category = 'Transfer';
 
   const dispatch = useDispatch();
 
   const handleButton = ()=>{
-    dispatch(checkPinIsValid(email,createPin));
-    if (validPin === true){
-      dispatch(transfer(category,amount,sender.id,item.id,note));
-      navigation.navigate('Success',{item,date:date,time:time});
-    } else if (validPin === false){
-      setData({...data,msg:'Wrong Pin!'});
-    }
+    console.log('ya')
   };
-
-  // validPin ?
-  //     navigation.navigate('Success',{item,date:date,time:time})
-  //   :
-  // null;
 
   const [pin,setPin] = useState({
     pin1:null,
@@ -175,7 +150,7 @@ const PinConfirmation = ({route,navigation}) => {
   );
 };
 
-export default PinConfirmation;
+export default InputOtp;
 
 const Styles = StyleSheet.create({
   header:{

@@ -29,7 +29,7 @@ const Confirmation = ({route,navigation}) => {
 
   const {item} = route.params;
   const regex = /localhost/;
-  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+  const newUrlImage = item.avatar.replace(regex,'54.161.84.11');
 
   return (
     <ScrollView style={globalStyles.container}>

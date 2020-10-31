@@ -9,7 +9,7 @@ const CardTransaction = ({item}) => {
   const loginUser = useSelector((state)=>state.auth.data);
 
   const regex = /localhost/;
-  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+  const newUrlImage = item.avatar.replace(regex,'54.161.84.11');
 
   return (
     <View style={Styles.contenCard}>

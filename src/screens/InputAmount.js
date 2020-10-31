@@ -24,6 +24,7 @@ const InputAmount = ({route,navigation}) => {
     note:null,
     isValidNote:false,
     isValidAmount:false,
+    zeroBalance : null,
   });
 
   const handleInputAmount = (val)=>{
@@ -63,14 +64,20 @@ const InputAmount = ({route,navigation}) => {
       amount: form.amount,
       note: form.note,
     };
-
-    dispatch(addAmountNoteCreator(data));
-    navigation.navigate('Confirmation',{item});
+    if (userProfile[0].balance === 0){
+      setForm({
+        ...form,
+        zeroBalance:'sorry your balance is not enough!',
+      });
+    } else {
+      dispatch(addAmountNoteCreator(data));
+      navigation.navigate('Confirmation',{item});
+    }
   };
 
   const {item} = route.params;
   const regex = /localhost/;
-  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+  const newUrlImage = item.avatar.replace(regex,'54.161.84.11');
 
   return (
     <ScrollView style={globalStyles.container}>
@@ -102,6 +109,7 @@ const InputAmount = ({route,navigation}) => {
         </View>
       </View>
       <View style={Styles.footer}>
+        {form.zeroBalance === null ? null : <Text style={Styles.noMoney}>{form.zeroBalance}</Text>}
         <TextInput
         style={Styles.inputBlank}
         placeholder="0.00"
@@ -286,5 +294,12 @@ const Styles = StyleSheet.create({
     shadowRadius: 75,
 
     elevation:3,
+  },
+  noMoney:{
+    marginTop:15,
+    textAlign:'center',
+    color:'#FF5B37',
+    fontWeight:'bold',
+    fontSize:16,
   },
 });

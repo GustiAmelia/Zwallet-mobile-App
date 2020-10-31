@@ -8,7 +8,7 @@ const initialState = {
   data :null,
   register:false,
   pinSuccess:false,
-  isValidPin:false,
+  isValidPin:null,
   pinChangeSuccess:false,
   isLoginSuccess:true,
   messageRegister:null,
@@ -168,7 +168,7 @@ const authReducers = (state = initialState,action) => {
     case actions.backHome:
       return {
         ...state,
-        isValidPin:false,
+        isValidPin:null,
       };
     default:
       return state;

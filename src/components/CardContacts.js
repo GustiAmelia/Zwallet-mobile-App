@@ -5,7 +5,10 @@ import Feather from 'react-native-vector-icons/Feather';
 const CardContacs = ({item}) => {
 
   const regex = /localhost/;
-  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+  let newUrlImage;
+  if (item.avatar !== ''){
+    newUrlImage = item.avatar.replace(regex,'54.161.84.11');
+  }
 
   return (
       <View style={Styles.contenCard}>

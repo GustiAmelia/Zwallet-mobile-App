@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const linkAPI = 'http://192.168.43.73:5000/';
+const linkAPI = 'http://54.161.84.11:5000/';
 
 export const login = (email,password) => {
   return Axios.post(`${linkAPI}auth/login`,{email, password});

@@ -29,8 +29,6 @@ const History = ({navigation}) => {
   const allHistory = useSelector((state)=>state.transaction.allHistory);
   const dataIn = useSelector((state)=>state.transaction.income);
   const dataOut = useSelector((state)=>state.transaction.out);
-  console.log(dataIn);
-  console.log(dataOut);
 
   const transferIn = allHistory.filter(value=>{return value.receiver_id === loginUser.id;});
   const transferOut = allHistory.filter(value=>{return value.receiver_id !== loginUser.id;});

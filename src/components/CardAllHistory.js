@@ -1,16 +1,19 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-
-import { View, Text,Image, StyleSheet,Feather} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import { View, Text,Image, StyleSheet} from 'react-native';
 
 const CardAllHistory = ({item}) => {
   const loginUser = useSelector((state)=>state.auth.data);
   const regex = /localhost/;
-  const newUrlImage = item.avatar.replace(regex,'192.168.43.73');
+  let newUrlImage;
+  if (item.avatar !== ''){
+    newUrlImage = item.avatar.replace(regex,'54.161.84.11');
+  }
   return (
     <View style={Styles.contenCard}>
       <View style={Styles.leftContent}>
-        {item.avatar !== null ?
+        {item.avatar !== '' ?
           <Image
           style={Styles.image}
           source={{uri:newUrlImage}}/>

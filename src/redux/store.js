@@ -18,8 +18,8 @@ const logger = createLogger();
 const enhancers = applyMiddleware(rpm,logger);
 
 export default ()=>{
-  // let store = createStore(persistedReducer,enhancers);
-  let store = createStore(indexReducer,enhancers);
+  let store = createStore(persistedReducer,enhancers);
+  // let store = createStore(indexReducer,enhancers);
   let persistore = persistStore(store);
   return {
     store,
