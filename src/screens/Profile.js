@@ -19,7 +19,7 @@ const Profile = ({navigation}) => {
   const dispatch = useDispatch();
 
   const regex = /localhost/;
-  const newUrlImage = user.avatar.replace(regex,'54.161.84.11');
+  const newUrlImage = user.avatar.replace(regex,'192.168.43.233');
 
   const [image,setImage] = useState(null);
   // const [avatar, setAvatar] = useState(null);

@@ -26,8 +26,8 @@ const Success = ({route,navigation}) => {
   const {time} = route.params;
   const {item} = route.params;
   const regex = /localhost/;
-  const newUrlImageSender = sender.avatar.replace(regex,'54.161.84.11');
-  const newUrlImageReceiver = item.avatar.replace(regex,'54.161.84.11');
+  const newUrlImageSender = sender.avatar.replace(regex,'192.168.43.233');
+  const newUrlImageReceiver = item.avatar.replace(regex,'192.168.43.233');
 
   return (
     <View style={globalStyles.container}>

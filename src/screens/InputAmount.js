@@ -77,7 +77,7 @@ const InputAmount = ({route,navigation}) => {
 
   const {item} = route.params;
   const regex = /localhost/;
-  const newUrlImage = item.avatar.replace(regex,'54.161.84.11');
+  const newUrlImage = item.avatar.replace(regex,'192.168.43.233');
 
   return (
     <ScrollView style={globalStyles.container}>

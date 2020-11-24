@@ -43,12 +43,12 @@ const Home = ({navigation}) => {
   if (userProfile.length === 0){
     data = loginUser;
     if (loginUser.avatar !== ''){
-        newUrlImage = loginUser.avatar.replace(regex,'54.161.84.11');
+        newUrlImage = loginUser.avatar.replace(regex,'192.168.43.233');
     }
   } else {
    data = userProfile[0];
     if (userProfile[0].avatar !== ''){
-      newUrlImage = userProfile[0].avatar.replace(regex,'54.161.84.11');
+      newUrlImage = userProfile[0].avatar.replace(regex,'192.168.43.233');
     }
   }
 

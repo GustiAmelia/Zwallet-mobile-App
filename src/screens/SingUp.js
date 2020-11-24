@@ -23,6 +23,7 @@ const SignUp = ({navigation}) => {
     isValidPassword:false,
     messageEmail:null,
     messagePassword:null,
+    errorMessage:null,
   });
 
   const handleUsername = (val)=>{
@@ -107,6 +108,7 @@ const SignUp = ({navigation}) => {
         ...form,
         messageEmail:null,
         messagePassword:null,
+        errorMessage:messageRegister,
       });
     }
   };
@@ -122,7 +124,7 @@ const SignUp = ({navigation}) => {
           <ScrollView>
             <Text style={Styles.title}>Sign Up</Text>
             <Text style={Styles.text}>Create your account to access Zwallet.</Text>
-            {isSuccessRegister ? null : <Text style={Styles.errorMessage}>{messageRegister}</Text>}
+            {isSuccessRegister ? null : <Text style={Styles.errorMessage}>{form.errorMessage}</Text>}
             {form.isValidUsername ?
               <View style={Styles.formFilled}>
                 <Feather
@@ -305,7 +307,7 @@ const Styles = StyleSheet.create({
     elevation:100,
   },
   title:{
-    marginTop:25,
+    marginTop:13,
     textAlign:'center',
     fontWeight:'bold',
     fontStyle:'normal',
@@ -315,7 +317,7 @@ const Styles = StyleSheet.create({
     lineHeight:33,
   },
   text:{
-    marginVertical:12.5,
+    marginVertical:8,
     fontWeight:'normal',
     fontStyle:'normal',
     fontFamily:'Nunito Sans',
